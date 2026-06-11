@@ -3,9 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "OrchidCare frontend",
+  "description": "OrchidCare frontend application",
   "scripts": {
-    "scaffold-info": "node -e \"console.log('OrchidCare frontend )\""
+    "dev": "vite",
+    "build": "npm run typecheck && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
+    "scaffold-info": "node -e \"console.log('OrchidCare frontend scaffold')\""
+  },
+  "dependencies": {
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "latest",
+    "@vitejs/plugin-react": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "tailwindcss": "latest",
+    "typescript": "latest",
+    "vite": "latest"
   },
   "engines": {
     "node": ">=20"

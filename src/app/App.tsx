@@ -72,15 +72,17 @@ export function App() {
                 key={orchid.slug}
                 className="overflow-hidden rounded-lg border border-moss/25 bg-white shadow-sm"
               >
-                {orchid.imageUrl ? (
-                  <img
-                    src={orchid.imageUrl}
-                    alt={orchid.imageAlt ?? orchid.commonName}
-                    className="aspect-[4/3] w-full bg-petal/40 object-cover"
-                  />
-                ) : (
-                  <div className="aspect-[4/3] w-full bg-petal/40" aria-label={orchid.commonName} />
-                )}
+                <div className="aspect-[4/3] w-full overflow-hidden bg-petal/40">
+                  {orchid.imageUrl ? (
+                    <img
+                      src={orchid.imageUrl}
+                      alt={orchid.imageAlt ?? orchid.commonName}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-full w-full" aria-label={orchid.commonName} />
+                  )}
+                </div>
                 <div className="space-y-3 p-4">
                   <div>
                     <h2 className="text-xl font-semibold leading-7">{orchid.commonName}</h2>

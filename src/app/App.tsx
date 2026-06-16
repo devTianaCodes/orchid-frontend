@@ -41,7 +41,6 @@ export function App() {
   >(null);
   const [filters, setFilters] = useState<BrowseFilters>(defaultBrowseFilters);
   const [isLoading, setIsLoading] = useState(true);
-  const [isFiltering, setIsFiltering] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const filterRequestIdRef = useRef(0);
 
@@ -93,8 +92,6 @@ export function App() {
     }, 250);
 
     async function loadFilteredOrchids() {
-      setIsFiltering(true);
-
       try {
         const response = await listOrchids(toOrchidListFilters(filters));
 
@@ -105,10 +102,6 @@ export function App() {
       } catch (error) {
         if (isMounted && filterRequestIdRef.current === requestId) {
           setErrorMessage(error instanceof Error ? error.message : "Unable to load orchids.");
-        }
-      } finally {
-        if (isMounted && filterRequestIdRef.current === requestId) {
-          setIsFiltering(false);
         }
       }
     }
@@ -201,12 +194,7 @@ export function App() {
               />
             </div>
 
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-moss/20 pt-4">
-              <p className="text-sm font-medium text-bark">
-                {isFiltering
-                  ? "Updating"
-                  : `${orchids.length} orchid${orchids.length === 1 ? "" : "s"}`}
-              </p>
+            <div className="mt-4 flex justify-end border-t border-moss/20 pt-4">
               <button
                 type="button"
                 onClick={clearFilters}

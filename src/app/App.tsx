@@ -13,6 +13,7 @@ import {
   type OrchidLightNeeds,
   type OrchidListFilters,
   type OrchidListItem,
+  type OrchidListPagination,
   type OrchidWateringNeeds,
 } from "../api/orchidApi";
 
@@ -34,15 +35,20 @@ const defaultBrowseFilters: BrowseFilters = {
   bloomSeason: "",
 };
 
+const orchidPageSize = 12;
+
 export function App() {
   const [orchids, setOrchids] = useState<OrchidListItem[]>([]);
+  const [pagination, setPagination] = useState<OrchidListPagination | null>(null);
   const [filterMetadata, setFilterMetadata] = useState<
     OrchidFilterMetadataResponse["filters"] | null
   >(null);
   const [filters, setFilters] = useState<BrowseFilters>(defaultBrowseFilters);
+  const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const filterRequestIdRef = useRef(0);
+  const resultsRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -50,12 +56,13 @@ export function App() {
     async function loadInitialData() {
       try {
         const [orchidResponse, filterResponse] = await Promise.all([
-          listOrchids(),
+          listOrchids({ page: 1, pageSize: orchidPageSize }),
           getOrchidFilters(),
         ]);
 
         if (isMounted) {
           setOrchids(orchidResponse.orchids);
+          setPagination(orchidResponse.pagination);
           setFilterMetadata(filterResponse.filters);
           setErrorMessage(null);
         }
@@ -93,10 +100,15 @@ export function App() {
 
     async function loadFilteredOrchids() {
       try {
-        const response = await listOrchids(toOrchidListFilters(filters));
+        const response = await listOrchids({
+          ...toOrchidListFilters(filters),
+          page,
+          pageSize: orchidPageSize,
+        });
 
         if (isMounted && filterRequestIdRef.current === requestId) {
           setOrchids(response.orchids);
+          setPagination(response.pagination);
           setErrorMessage(null);
         }
       } catch (error) {
@@ -110,7 +122,7 @@ export function App() {
       isMounted = false;
       window.clearTimeout(loadTimeout);
     };
-  }, [filters, isLoading]);
+  }, [filters, isLoading, page]);
 
   const hasActiveFilters = Object.values(filters).some(Boolean);
 
@@ -118,6 +130,7 @@ export function App() {
     name: TName,
     value: BrowseFilters[TName],
   ) {
+    setPage(1);
     setFilters((currentFilters) => ({
       ...currentFilters,
       [name]: value,
@@ -125,12 +138,18 @@ export function App() {
   }
 
   function clearFilters() {
+    setPage(1);
     setFilters(defaultBrowseFilters);
+  }
+
+  function changePage(nextPage: number) {
+    setPage(nextPage);
+    resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   return (
     <main className="min-h-screen bg-mist text-ink">
-      <section className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
+      <section className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
         <header>
           <h1 className="text-4xl font-bold sm:text-5xl">OrchidCare</h1>
           <p className="mt-3 max-w-2xl text-base leading-7 text-bark">
@@ -216,52 +235,64 @@ export function App() {
           />
         ) : null}
 
-        {!isLoading && !errorMessage && orchids.length === 0 ? (
-          <EmptyState
-            title="No orchids yet"
-            message="Add seed data to see orchid care profiles here."
-          />
-        ) : null}
+        <div ref={resultsRef}>
+          {!isLoading && !errorMessage && orchids.length === 0 ? (
+            <EmptyState
+              title="No matching orchids"
+              message="Adjust the search or filters to find more orchid care profiles."
+            />
+          ) : null}
 
-        {!isLoading && !errorMessage && orchids.length > 0 ? (
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {orchids.map((orchid) => (
-              <li
-                key={orchid.slug}
-                className="overflow-hidden rounded-lg border border-moss/25 bg-white shadow-sm"
-              >
-                <div className="aspect-[4/3] w-full overflow-hidden bg-petal/40">
-                  {orchid.imageUrl ? (
-                    <img
-                      src={orchid.imageUrl}
-                      alt={orchid.imageAlt ?? orchid.commonName}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <div className="h-full w-full" aria-label={orchid.commonName} />
-                  )}
-                </div>
-                <div className="space-y-3 p-4">
-                  <div>
-                    <h2 className="text-xl font-semibold leading-7">{orchid.commonName}</h2>
-                    <p className="text-sm italic leading-6 text-bark">{orchid.scientificName}</p>
-                  </div>
-                  <p className="text-sm leading-6 text-ink/80">{orchid.shortDescription}</p>
-                  <dl className="grid grid-cols-2 gap-3 text-sm">
-                    <div>
-                      <dt className="font-medium text-bark">Difficulty</dt>
-                      <dd className="capitalize text-ink">{orchid.difficulty}</dd>
+          {!isLoading && !errorMessage && orchids.length > 0 ? (
+            <div className="flex flex-col gap-6">
+              <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {orchids.map((orchid) => (
+                  <li
+                    key={orchid.slug}
+                    className="overflow-hidden rounded-lg border border-moss/25 bg-white shadow-sm"
+                  >
+                    <div className="aspect-[4/3] w-full overflow-hidden bg-petal/40">
+                      {orchid.imageUrl ? (
+                        <img
+                          src={orchid.imageUrl}
+                          alt={orchid.imageAlt ?? orchid.commonName}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="h-full w-full" aria-label={orchid.commonName} />
+                      )}
                     </div>
-                    <div>
-                      <dt className="font-medium text-bark">Light</dt>
-                      <dd className="capitalize text-ink">{orchid.lightNeeds.replace("-", " ")}</dd>
+                    <div className="space-y-3 p-4">
+                      <div>
+                        <h2 className="text-xl font-semibold leading-7">{orchid.commonName}</h2>
+                        <p className="text-sm italic leading-6 text-bark">
+                          {orchid.scientificName}
+                        </p>
+                      </div>
+                      <p className="text-sm leading-6 text-ink/80">{orchid.shortDescription}</p>
+                      <dl className="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                          <dt className="font-medium text-bark">Difficulty</dt>
+                          <dd className="capitalize text-ink">{orchid.difficulty}</dd>
+                        </div>
+                        <div>
+                          <dt className="font-medium text-bark">Light</dt>
+                          <dd className="capitalize text-ink">
+                            {orchid.lightNeeds.replace("-", " ")}
+                          </dd>
+                        </div>
+                      </dl>
                     </div>
-                  </dl>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : null}
+                  </li>
+                ))}
+              </ul>
+
+              {pagination && pagination.totalPages > 1 ? (
+                <PaginationControls pagination={pagination} onPageChange={changePage} />
+              ) : null}
+            </div>
+          ) : null}
+        </div>
       </section>
     </main>
   );
@@ -291,6 +322,42 @@ function SelectFilter({ label, value, options, onChange }: SelectFilterProps) {
         ))}
       </select>
     </label>
+  );
+}
+
+type PaginationControlsProps = {
+  pagination: OrchidListPagination;
+  onPageChange: (page: number) => void;
+};
+
+function PaginationControls({ pagination, onPageChange }: PaginationControlsProps) {
+  return (
+    <nav
+      aria-label="Orchid pages"
+      className="flex flex-wrap items-center justify-center gap-3 text-sm"
+    >
+      <button
+        type="button"
+        onClick={() => onPageChange(pagination.page - 1)}
+        disabled={!pagination.hasPreviousPage}
+        className="h-11 min-w-24 rounded-md border border-moss/35 px-4 font-semibold text-leaf transition hover:border-leaf disabled:cursor-not-allowed disabled:opacity-45"
+      >
+        Previous
+      </button>
+
+      <span className="min-w-28 text-center font-medium text-bark" aria-live="polite">
+        Page {pagination.page} of {pagination.totalPages}
+      </span>
+
+      <button
+        type="button"
+        onClick={() => onPageChange(pagination.page + 1)}
+        disabled={!pagination.hasNextPage}
+        className="h-11 min-w-24 rounded-md border border-moss/35 px-4 font-semibold text-leaf transition hover:border-leaf disabled:cursor-not-allowed disabled:opacity-45"
+      >
+        Next
+      </button>
+    </nav>
   );
 }
 

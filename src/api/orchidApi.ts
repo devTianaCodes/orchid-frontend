@@ -34,10 +34,22 @@ export type OrchidListFilters = {
   temperature?: number;
   growthType?: OrchidGrowthType;
   bloomSeason?: OrchidBloomSeason;
+  page?: number;
+  pageSize?: number;
+};
+
+export type OrchidListPagination = {
+  page: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 };
 
 export type OrchidListResponse = {
   orchids: OrchidListItem[];
+  pagination: OrchidListPagination;
 };
 
 export type OrchidFilterOption<TValue extends string = string> = {
@@ -74,6 +86,8 @@ export function listOrchids(filters: OrchidListFilters = {}) {
   addSearchParam(searchParams, "temperature", filters.temperature);
   addSearchParam(searchParams, "growthType", filters.growthType);
   addSearchParam(searchParams, "bloomSeason", filters.bloomSeason);
+  addSearchParam(searchParams, "page", filters.page);
+  addSearchParam(searchParams, "pageSize", filters.pageSize);
 
   const query = searchParams.toString();
 

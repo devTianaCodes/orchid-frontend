@@ -1,24 +1,63 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
 import { LoadingState } from "../components/LoadingState";
-import { listOrchids, type OrchidListItem } from "../api/orchidApi";
+import {
+  getOrchidFilters,
+  listOrchids,
+  type OrchidBloomSeason,
+  type OrchidDifficulty,
+  type OrchidFilterMetadataResponse,
+  type OrchidGrowthType,
+  type OrchidLightNeeds,
+  type OrchidListFilters,
+  type OrchidListItem,
+  type OrchidWateringNeeds,
+} from "../api/orchidApi";
+
+type BrowseFilters = {
+  q: string;
+  difficulty: "" | OrchidDifficulty;
+  light: "" | OrchidLightNeeds;
+  water: "" | OrchidWateringNeeds;
+  growthType: "" | OrchidGrowthType;
+  bloomSeason: "" | OrchidBloomSeason;
+};
+
+const defaultBrowseFilters: BrowseFilters = {
+  q: "",
+  difficulty: "",
+  light: "",
+  water: "",
+  growthType: "",
+  bloomSeason: "",
+};
 
 export function App() {
   const [orchids, setOrchids] = useState<OrchidListItem[]>([]);
+  const [filterMetadata, setFilterMetadata] = useState<
+    OrchidFilterMetadataResponse["filters"] | null
+  >(null);
+  const [filters, setFilters] = useState<BrowseFilters>(defaultBrowseFilters);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFiltering, setIsFiltering] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const filterRequestIdRef = useRef(0);
 
   useEffect(() => {
     let isMounted = true;
 
-    async function loadOrchids() {
+    async function loadInitialData() {
       try {
-        const response = await listOrchids();
+        const [orchidResponse, filterResponse] = await Promise.all([
+          listOrchids(),
+          getOrchidFilters(),
+        ]);
 
         if (isMounted) {
-          setOrchids(response.orchids);
+          setOrchids(orchidResponse.orchids);
+          setFilterMetadata(filterResponse.filters);
           setErrorMessage(null);
         }
       } catch (error) {
@@ -32,12 +71,69 @@ export function App() {
       }
     }
 
-    void loadOrchids();
+    void loadInitialData();
 
     return () => {
       isMounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    let isMounted = true;
+    const requestId = filterRequestIdRef.current + 1;
+
+    filterRequestIdRef.current = requestId;
+
+    const loadTimeout = window.setTimeout(() => {
+      void loadFilteredOrchids();
+    }, 250);
+
+    async function loadFilteredOrchids() {
+      setIsFiltering(true);
+
+      try {
+        const response = await listOrchids(toOrchidListFilters(filters));
+
+        if (isMounted && filterRequestIdRef.current === requestId) {
+          setOrchids(response.orchids);
+          setErrorMessage(null);
+        }
+      } catch (error) {
+        if (isMounted && filterRequestIdRef.current === requestId) {
+          setErrorMessage(error instanceof Error ? error.message : "Unable to load orchids.");
+        }
+      } finally {
+        if (isMounted && filterRequestIdRef.current === requestId) {
+          setIsFiltering(false);
+        }
+      }
+    }
+
+    return () => {
+      isMounted = false;
+      window.clearTimeout(loadTimeout);
+    };
+  }, [filters, isLoading]);
+
+  const hasActiveFilters = Object.values(filters).some(Boolean);
+
+  function updateFilter<TName extends keyof BrowseFilters>(
+    name: TName,
+    value: BrowseFilters[TName],
+  ) {
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      [name]: value,
+    }));
+  }
+
+  function clearFilters() {
+    setFilters(defaultBrowseFilters);
+  }
 
   return (
     <main className="min-h-screen bg-mist text-ink">
@@ -48,6 +144,80 @@ export function App() {
             Browse orchid care profiles and start learning what each variety needs to thrive.
           </p>
         </header>
+
+        {filterMetadata ? (
+          <section className="rounded-lg border border-moss/25 bg-white p-4 shadow-sm">
+            <div className="grid gap-4 md:grid-cols-[minmax(0,1.5fr)_repeat(2,minmax(0,1fr))]">
+              <label className="flex flex-col gap-2 text-sm font-medium text-bark">
+                Search
+                <input
+                  type="search"
+                  value={filters.q}
+                  onChange={(event) => updateFilter("q", event.target.value)}
+                  placeholder="Name, genus, care keyword"
+                  className="h-11 rounded-md border border-moss/35 bg-mist px-3 text-base font-normal text-ink outline-none transition focus:border-leaf focus:bg-white"
+                />
+              </label>
+
+              <SelectFilter
+                label="Difficulty"
+                value={filters.difficulty}
+                options={filterMetadata.difficulties}
+                onChange={(value) =>
+                  updateFilter("difficulty", value as BrowseFilters["difficulty"])
+                }
+              />
+
+              <SelectFilter
+                label="Light"
+                value={filters.light}
+                options={filterMetadata.lightNeeds}
+                onChange={(value) => updateFilter("light", value as BrowseFilters["light"])}
+              />
+
+              <SelectFilter
+                label="Water"
+                value={filters.water}
+                options={filterMetadata.wateringNeeds}
+                onChange={(value) => updateFilter("water", value as BrowseFilters["water"])}
+              />
+
+              <SelectFilter
+                label="Growth"
+                value={filters.growthType}
+                options={filterMetadata.growthTypes}
+                onChange={(value) =>
+                  updateFilter("growthType", value as BrowseFilters["growthType"])
+                }
+              />
+
+              <SelectFilter
+                label="Bloom"
+                value={filters.bloomSeason}
+                options={filterMetadata.bloomSeasons}
+                onChange={(value) =>
+                  updateFilter("bloomSeason", value as BrowseFilters["bloomSeason"])
+                }
+              />
+            </div>
+
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-moss/20 pt-4">
+              <p className="text-sm font-medium text-bark">
+                {isFiltering
+                  ? "Updating"
+                  : `${orchids.length} orchid${orchids.length === 1 ? "" : "s"}`}
+              </p>
+              <button
+                type="button"
+                onClick={clearFilters}
+                disabled={!hasActiveFilters}
+                className="h-10 rounded-md border border-moss/35 px-4 text-sm font-semibold text-leaf transition hover:border-leaf disabled:cursor-not-allowed disabled:opacity-45"
+              >
+                Clear
+              </button>
+            </div>
+          </section>
+        ) : null}
 
         {isLoading ? <LoadingState label="Loading orchids" /> : null}
 
@@ -107,4 +277,42 @@ export function App() {
       </section>
     </main>
   );
+}
+
+type SelectFilterProps = {
+  label: string;
+  value: string;
+  options: Array<{ value: string; label: string }>;
+  onChange: (value: string) => void;
+};
+
+function SelectFilter({ label, value, options, onChange }: SelectFilterProps) {
+  return (
+    <label className="flex flex-col gap-2 text-sm font-medium text-bark">
+      {label}
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="h-11 rounded-md border border-moss/35 bg-mist px-3 text-base font-normal text-ink outline-none transition focus:border-leaf focus:bg-white"
+      >
+        <option value="">All</option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function toOrchidListFilters(filters: BrowseFilters): OrchidListFilters {
+  return {
+    q: filters.q.trim() || undefined,
+    difficulty: filters.difficulty || undefined,
+    light: filters.light || undefined,
+    water: filters.water || undefined,
+    growthType: filters.growthType || undefined,
+    bloomSeason: filters.bloomSeason || undefined,
+  };
 }

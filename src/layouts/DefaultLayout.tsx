@@ -5,7 +5,7 @@ export function DefaultLayout() {
   const isHomePage = location.pathname === "/";
 
   return (
-    <main className={`min-h-screen ${isHomePage ? "bg-ink text-white" : "bg-mist text-ink"}`}>
+    <main className={`min-h-screen ${isHomePage ? "bg-ink text-white" : "bg-sage text-ink"}`}>
       <section
         className={
           isHomePage
@@ -22,11 +22,7 @@ export function DefaultLayout() {
         >
           <div>
             <h1 className="text-4xl font-bold sm:text-5xl">OrchidCare</h1>
-            <p
-              className={`mt-3 max-w-2xl text-base leading-7 ${
-                isHomePage ? "text-white/82" : "text-bark"
-              }`}
-            >
+            <p className="mt-3 max-w-2xl text-base leading-7 text-white/82">
               Browse orchid care profiles and start learning what each variety needs to thrive.
             </p>
           </div>
@@ -38,10 +34,10 @@ export function DefaultLayout() {
               className={({ isActive }) =>
                 `rounded-md border px-4 py-2 transition ${
                   isActive
-                    ? "border-leaf bg-leaf text-white"
+                    ? "border-rosy bg-rosy text-white"
                     : isHomePage
                       ? "border-white/40 text-white hover:border-white"
-                      : "border-moss/35 text-leaf hover:border-leaf"
+                      : "border-white/45 text-white hover:border-white"
                 }`
               }
             >
@@ -52,10 +48,10 @@ export function DefaultLayout() {
               className={({ isActive }) =>
                 `rounded-md border px-4 py-2 transition ${
                   isActive
-                    ? "border-leaf bg-leaf text-white"
+                    ? "border-rosy bg-rosy text-white"
                     : isHomePage
                       ? "border-white/40 text-white hover:border-white"
-                      : "border-moss/35 text-leaf hover:border-leaf"
+                      : "border-white/45 text-white hover:border-white"
                 }`
               }
             >
@@ -66,10 +62,10 @@ export function DefaultLayout() {
               className={({ isActive }) =>
                 `rounded-md border px-4 py-2 transition ${
                   isActive
-                    ? "border-leaf bg-leaf text-white"
+                    ? "border-rosy bg-rosy text-white"
                     : isHomePage
                       ? "border-white/40 text-white hover:border-white"
-                      : "border-moss/35 text-leaf hover:border-leaf"
+                      : "border-white/45 text-white hover:border-white"
                 }`
               }
             >

@@ -151,7 +151,7 @@ export function OrchidBrowsePage() {
   return (
     <>
       {filterMetadata ? (
-        <section className="rounded-lg border border-moss/25 bg-white p-4 shadow-sm">
+        <section className="rounded-lg border border-peony/50 bg-mist p-4 shadow-sm">
           <div className="grid gap-4 md:grid-cols-[minmax(0,1.5fr)_repeat(2,minmax(0,1fr))]">
             <label className="flex flex-col gap-2 text-sm font-medium text-bark">
               Search
@@ -160,7 +160,7 @@ export function OrchidBrowsePage() {
                 value={filters.q}
                 onChange={(event) => updateFilter("q", event.target.value)}
                 placeholder="Name, genus, care keyword"
-                className="h-11 rounded-md border border-moss/35 bg-mist px-3 text-base font-normal text-ink outline-none transition focus:border-leaf focus:bg-white"
+                className="h-11 rounded-md border border-moss/45 bg-white px-3 text-base font-normal text-ink outline-none transition focus:border-rosy"
               />
             </label>
 
@@ -202,12 +202,12 @@ export function OrchidBrowsePage() {
             />
           </div>
 
-          <div className="mt-4 flex justify-end border-t border-moss/20 pt-4">
+          <div className="mt-4 flex justify-end border-t border-peony/45 pt-4">
             <button
               type="button"
               onClick={clearFilters}
               disabled={!hasActiveFilters}
-              className="h-10 rounded-md border border-moss/35 px-4 text-sm font-semibold text-leaf transition hover:border-leaf disabled:cursor-not-allowed disabled:opacity-45"
+              className="h-10 rounded-md border border-moss/45 px-4 text-sm font-semibold text-rosy transition hover:border-rosy disabled:cursor-not-allowed disabled:opacity-45"
             >
               Clear
             </button>
@@ -238,10 +238,10 @@ export function OrchidBrowsePage() {
               {orchids.map((orchid) => (
                 <li
                   key={orchid.slug}
-                  className="overflow-hidden rounded-lg border border-moss/25 bg-white shadow-sm"
+                  className="overflow-hidden rounded-lg border border-peony/50 bg-mist shadow-sm"
                 >
                   <Link to={`/orchids/${orchid.slug}`} className="block h-full">
-                    <div className="aspect-[4/3] w-full overflow-hidden bg-petal/40">
+                    <div className="aspect-[4/3] w-full overflow-hidden bg-peony/40">
                       {orchid.imageUrl ? (
                         <img
                           src={orchid.imageUrl}
@@ -302,7 +302,7 @@ function SelectFilter({ label, value, options, onChange }: SelectFilterProps) {
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-11 rounded-md border border-moss/35 bg-mist px-3 text-base font-normal text-ink outline-none transition focus:border-leaf focus:bg-white"
+        className="h-11 rounded-md border border-moss/45 bg-white px-3 text-base font-normal text-ink outline-none transition focus:border-rosy"
       >
         <option value="">All</option>
         {options.map((option) => (
@@ -330,7 +330,7 @@ function PaginationControls({ pagination, onPageChange }: PaginationControlsProp
         type="button"
         onClick={() => onPageChange(pagination.page - 1)}
         disabled={!pagination.hasPreviousPage}
-        className="h-11 min-w-24 rounded-md border border-moss/35 px-4 font-semibold text-leaf transition hover:border-leaf disabled:cursor-not-allowed disabled:opacity-45"
+        className="h-11 min-w-24 rounded-md border border-moss/45 bg-mist px-4 font-semibold text-rosy transition hover:border-rosy disabled:cursor-not-allowed disabled:opacity-45"
       >
         Previous
       </button>
@@ -343,7 +343,7 @@ function PaginationControls({ pagination, onPageChange }: PaginationControlsProp
         type="button"
         onClick={() => onPageChange(pagination.page + 1)}
         disabled={!pagination.hasNextPage}
-        className="h-11 min-w-24 rounded-md border border-moss/35 px-4 font-semibold text-leaf transition hover:border-leaf disabled:cursor-not-allowed disabled:opacity-45"
+        className="h-11 min-w-24 rounded-md border border-moss/45 bg-mist px-4 font-semibold text-rosy transition hover:border-rosy disabled:cursor-not-allowed disabled:opacity-45"
       >
         Next
       </button>

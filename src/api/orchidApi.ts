@@ -25,6 +25,20 @@ export type OrchidListItem = {
   imageAlt: string | null;
 };
 
+export type OrchidDetail = OrchidListItem & {
+  nativeRegion: string;
+  humidityMinPercent: number;
+  humidityMaxPercent: number;
+  temperatureMinCelsius: number;
+  temperatureMaxCelsius: number;
+  pottingMedium: string;
+  bloomNotes: string;
+  careSummary: string;
+  imageSourceUrl: string | null;
+  imageLicense: string | null;
+  imageAttribution: string | null;
+};
+
 export type OrchidListFilters = {
   q?: string;
   difficulty?: OrchidDifficulty;
@@ -50,6 +64,10 @@ export type OrchidListPagination = {
 export type OrchidListResponse = {
   orchids: OrchidListItem[];
   pagination: OrchidListPagination;
+};
+
+export type OrchidDetailResponse = {
+  orchid: OrchidDetail;
 };
 
 export type OrchidFilterOption<TValue extends string = string> = {
@@ -92,6 +110,10 @@ export function listOrchids(filters: OrchidListFilters = {}) {
   const query = searchParams.toString();
 
   return getJson<OrchidListResponse>(query ? `/orchids?${query}` : "/orchids");
+}
+
+export function getOrchidBySlug(slug: string) {
+  return getJson<OrchidDetailResponse>(`/orchids/${slug}`);
 }
 
 export function getOrchidFilters() {

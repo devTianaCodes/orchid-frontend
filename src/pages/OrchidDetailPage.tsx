@@ -79,7 +79,7 @@ export function OrchidDetailPage() {
         </div>
 
         <div className="flex flex-col gap-6 p-5 sm:p-6 lg:p-8">
-          <Link to="/" className="text-sm font-semibold text-leaf hover:underline">
+          <Link to="/orchids" className="text-sm font-semibold text-leaf hover:underline">
             Back to orchids
           </Link>
 

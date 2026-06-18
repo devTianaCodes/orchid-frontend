@@ -37,6 +37,8 @@ const defaultBrowseFilters: BrowseFilters = {
 };
 
 const orchidPageSize = 12;
+const favoriteIconClass =
+  "absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center text-2xl leading-none text-white";
 
 export function OrchidBrowsePage() {
   const [orchids, setOrchids] = useState<OrchidListItem[]>([]);
@@ -236,8 +238,14 @@ export function OrchidBrowsePage() {
           <div className="flex flex-col gap-6">
             <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {orchids.map((orchid) => (
-                <li key={orchid.slug} className="overflow-hidden rounded-lg bg-mist shadow-sm">
+                <li
+                  key={orchid.slug}
+                  className="relative overflow-hidden rounded-lg bg-mist shadow-sm"
+                >
                   <Link to={`/orchids/${orchid.slug}`} className="group block h-full">
+                    <span aria-hidden="true" className={favoriteIconClass}>
+                      ♥
+                    </span>
                     <div className="aspect-[4/3] w-full overflow-hidden bg-peony/40">
                       {orchid.imageUrl ? (
                         <img

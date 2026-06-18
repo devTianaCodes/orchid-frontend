@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 
 import orchidCareLogo from "../assets/orchidcare-logo.png";
@@ -5,8 +6,9 @@ import orchidCareLogo from "../assets/orchidcare-logo.png";
 export function DefaultLayout() {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `inline-flex h-12 items-center rounded-md px-5 text-base font-bold text-rosy transition ${
+    `inline-flex h-12 items-center justify-center rounded-md px-5 text-base font-bold text-rosy transition ${
       isActive ? "bg-peony" : "bg-white hover:bg-peony"
     }`;
 
@@ -22,18 +24,26 @@ export function DefaultLayout() {
         <header
           className={
             isHomePage
-              ? "relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-6 sm:absolute sm:left-0 sm:right-0 sm:top-0 sm:flex-row sm:items-end sm:justify-between sm:px-6 lg:px-8"
-              : "flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
+              ? "absolute left-0 right-0 top-0 z-10 mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-6 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8"
+              : "flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between"
           }
         >
-          <div>
+          <div className="flex items-center justify-between gap-4">
             <img src={orchidCareLogo} alt="OrchidCare" className="h-auto w-72 max-w-full sm:w-96" />
-            <p className="mt-3 max-w-2xl text-base leading-7 text-white/82">
-              Browse orchid care profiles and start learning what each variety needs to thrive.
-            </p>
+
+            <button
+              type="button"
+              className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-white text-2xl font-bold leading-none text-rosy transition hover:bg-peony lg:hidden"
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-navigation"
+              aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              onClick={() => setIsMenuOpen((current) => !current)}
+            >
+              {isMenuOpen ? "×" : "☰"}
+            </button>
           </div>
 
-          <nav className="flex flex-wrap gap-3">
+          <nav className="hidden flex-wrap gap-3 lg:flex">
             <NavLink to="/" end className={navLinkClass}>
               Home
             </NavLink>
@@ -44,6 +54,24 @@ export function DefaultLayout() {
               Favorites
             </NavLink>
           </nav>
+
+          {isMenuOpen ? (
+            <nav id="mobile-navigation" className="flex flex-col gap-3 lg:hidden">
+              <NavLink to="/" end className={navLinkClass} onClick={() => setIsMenuOpen(false)}>
+                Home
+              </NavLink>
+              <NavLink to="/orchids" className={navLinkClass} onClick={() => setIsMenuOpen(false)}>
+                Orchids
+              </NavLink>
+              <NavLink
+                to="/favorites"
+                className={navLinkClass}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Favorites
+              </NavLink>
+            </nav>
+          ) : null}
         </header>
 
         <Outlet />

@@ -20,7 +20,7 @@ export function HomePage() {
           </p>
           <h2 className="mt-4 text-5xl font-bold leading-tight sm:text-7xl">Explore Orchids</h2>
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-white/88 sm:text-xl">
-            Discover orchid varieties, compare care needs, and learn the essentials for helping each
+            Discover exotic orchids, compare care needs, and learn the essentials for helping each
             bloom thrive.
           </p>
           <div className="mt-8">
@@ -33,15 +33,6 @@ export function HomePage() {
           </div>
         </div>
       </div>
-
-      <a
-        href="https://unsplash.com/s/photos/orchids"
-        target="_blank"
-        rel="noreferrer"
-        className="absolute bottom-3 right-4 rounded bg-ink/65 px-2 py-1 text-xs font-medium text-white/80 hover:text-white"
-      >
-        Ardi Evans, via Unsplash
-      </a>
     </section>
   );
 }

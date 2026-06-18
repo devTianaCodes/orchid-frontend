@@ -8,7 +8,7 @@ export function DefaultLayout() {
   const isHomePage = location.pathname === "/";
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `inline-flex h-12 items-center justify-center rounded-md px-5 text-base font-bold text-rosy transition ${
+    `inline-flex h-12 w-32 items-center justify-center rounded-md px-5 text-base font-bold text-rosy transition ${
       isActive ? "bg-peony" : "bg-white hover:bg-peony"
     }`;
 
@@ -33,17 +33,17 @@ export function DefaultLayout() {
 
             <button
               type="button"
-              className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-white text-2xl font-bold leading-none text-rosy transition hover:bg-peony lg:hidden"
+              className="inline-flex h-12 w-12 shrink-0 translate-y-1 items-center justify-center rounded-md bg-white text-2xl font-bold leading-none text-rosy transition hover:bg-peony lg:hidden"
               aria-expanded={isMenuOpen}
               aria-controls="mobile-navigation"
               aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
               onClick={() => setIsMenuOpen((current) => !current)}
             >
-              {isMenuOpen ? "×" : "☰"}
+              <span className="-translate-y-[3px]">{isMenuOpen ? "×" : "☰"}</span>
             </button>
           </div>
 
-          <nav className="hidden flex-wrap gap-3 lg:flex">
+          <nav className="hidden translate-y-1 flex-wrap gap-3 lg:flex">
             <NavLink to="/" end className={navLinkClass}>
               Home
             </NavLink>

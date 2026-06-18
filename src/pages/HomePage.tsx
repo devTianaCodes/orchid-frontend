@@ -13,13 +13,13 @@ export function HomePage() {
         backgroundSize: "cover",
       }}
     >
-      <div className="mx-auto flex min-h-screen w-full max-w-7xl items-end px-4 pb-16 pt-44 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24">
-        <div className="max-w-3xl">
+      <div className="mx-auto flex min-h-screen w-full max-w-7xl items-center justify-center px-4 py-32 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-wide text-petal">
             OrchidCare encyclopedia
           </p>
           <h2 className="mt-4 text-5xl font-bold leading-tight sm:text-7xl">Explore Orchids</h2>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-white/88 sm:text-xl">
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-white/88 sm:text-xl">
             Discover orchid varieties, compare care needs, and learn the essentials for helping each
             bloom thrive.
           </p>

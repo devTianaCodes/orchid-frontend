@@ -22,6 +22,7 @@ import {
   saveFavoriteOrchids,
   toggleFavoriteOrchid,
 } from "../utils/favoriteOrchids";
+import { toOrchidDetailPath } from "../utils/orchidRoutes";
 
 type BrowseFilters = {
   q: string;
@@ -273,7 +274,7 @@ export function OrchidBrowsePage() {
                   >
                     ♥
                   </button>
-                  <Link to={`/orchids/${orchid.slug}`} className="group block h-full">
+                  <Link to={toOrchidDetailPath(orchid.slug)} className="group block h-full">
                     <div className="aspect-[4/3] w-full overflow-hidden bg-peony/40">
                       {orchid.imageUrl ? (
                         <img

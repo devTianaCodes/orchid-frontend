@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getOrchidBySlug, type OrchidDetail } from "../api/orchidApi";
 import { ErrorState } from "../components/ErrorState";
 import { LoadingState } from "../components/LoadingState";
+import { toApiOrchidSlug } from "../utils/orchidRoutes";
 
 export function OrchidDetailPage() {
   const { slug } = useParams();
@@ -18,7 +19,7 @@ export function OrchidDetailPage() {
     }
 
     let isMounted = true;
-    const orchidSlug = slug;
+    const orchidSlug = toApiOrchidSlug(slug);
 
     async function loadOrchidDetail() {
       try {
@@ -65,8 +66,8 @@ export function OrchidDetailPage() {
 
   return (
     <article className="overflow-hidden rounded-lg bg-mist shadow-sm">
-      <div className="grid gap-0 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-        <div className="aspect-[4/3] bg-peony/40 lg:aspect-auto">
+      <div className="grid gap-0 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-stretch">
+        <div className="aspect-[4/3] bg-peony/40 lg:aspect-auto lg:max-h-[34rem]">
           {orchid.imageUrl ? (
             <img
               src={orchid.imageUrl}
@@ -117,29 +118,6 @@ export function OrchidDetailPage() {
           <h3 className="text-lg font-semibold">Care Summary</h3>
           <p className="mt-2 max-w-4xl text-base leading-7 text-ink/80">{orchid.careSummary}</p>
         </section>
-
-        {(orchid.imageSourceUrl || orchid.imageLicense || orchid.imageAttribution) && (
-          <section className="pt-4 text-sm leading-6 text-bark lg:col-span-3">
-            <h3 className="font-semibold text-ink">Image Credit</h3>
-            {orchid.imageAttribution ? <p>{orchid.imageAttribution}</p> : null}
-            <p>
-              {orchid.imageLicense ? <span>{orchid.imageLicense}</span> : null}
-              {orchid.imageSourceUrl ? (
-                <>
-                  {" "}
-                  <a
-                    href={orchid.imageSourceUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-semibold text-rosy hover:underline"
-                  >
-                    View source
-                  </a>
-                </>
-              ) : null}
-            </p>
-          </section>
-        )}
       </div>
     </article>
   );

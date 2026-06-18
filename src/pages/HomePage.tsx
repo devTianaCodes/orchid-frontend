@@ -26,7 +26,7 @@ export function HomePage() {
           <div className="mt-8">
             <Link
               to="/orchids"
-              className="inline-flex h-12 items-center rounded-md bg-white px-5 text-base font-bold text-rosy transition hover:bg-peony"
+              className="inline-flex h-12 items-center rounded-md bg-white px-5 text-base font-bold text-rosy transition hover:bg-peony-soft"
             >
               Browse orchids
             </Link>

@@ -9,7 +9,7 @@ export function DefaultLayout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     `inline-flex h-12 w-32 items-center justify-center rounded-md px-5 text-base font-bold text-rosy transition ${
-      isActive ? "bg-peony" : "bg-white hover:bg-peony"
+      isActive ? "bg-peony" : "bg-white hover:bg-peony-soft"
     }`;
 
   return (
@@ -38,7 +38,7 @@ export function DefaultLayout() {
             >
               <span
                 aria-hidden="true"
-                className="aspect-[1562/285] w-44 max-w-full bg-white transition group-hover:bg-peony sm:w-56"
+                className="aspect-[1562/285] w-44 max-w-full bg-white transition group-hover:bg-peony-soft sm:w-56"
                 style={{
                   maskImage: `url(${orchidCareLogo})`,
                   maskRepeat: "no-repeat",
@@ -52,7 +52,7 @@ export function DefaultLayout() {
 
             <button
               type="button"
-              className="inline-flex h-12 w-12 shrink-0 translate-y-1 items-center justify-center rounded-md bg-white text-2xl font-bold leading-none text-rosy transition hover:bg-peony lg:hidden"
+              className="inline-flex h-12 w-12 shrink-0 translate-y-1 items-center justify-center rounded-md bg-white text-2xl font-bold leading-none text-rosy transition hover:bg-peony-soft lg:hidden"
               aria-expanded={isMenuOpen}
               aria-controls="mobile-navigation"
               aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}

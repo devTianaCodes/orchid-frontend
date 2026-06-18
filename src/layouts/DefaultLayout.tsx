@@ -14,7 +14,7 @@ export function DefaultLayout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     `inline-flex h-12 w-32 items-center justify-center rounded-md px-5 text-base font-bold text-rosy transition ${
-      isActive ? "bg-peony" : "bg-white hover:bg-peony-soft"
+      isActive ? "bg-peony-soft" : "bg-white hover:bg-peony-soft"
     }`;
   const hasSoftHeroBackground = isOrchidsPage || isFavoritesPage;
   const mainStyle = hasSoftHeroBackground
@@ -51,7 +51,7 @@ export function DefaultLayout() {
               to="/"
               end
               aria-label="Go to OrchidCare home"
-              className="group inline-flex"
+              className="group inline-flex transition-transform hover:scale-105"
               onClick={() => setIsMenuOpen(false)}
             >
               <span

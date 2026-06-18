@@ -361,7 +361,7 @@ function PaginationControls({ pagination, onPageChange }: PaginationControlsProp
         Previous
       </button>
 
-      <span className="min-w-28 text-center font-medium text-bark" aria-live="polite">
+      <span className="min-w-28 text-center font-medium text-white" aria-live="polite">
         Page {pagination.page} of {pagination.totalPages}
       </span>
 

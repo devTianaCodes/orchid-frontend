@@ -8,7 +8,7 @@ export function HomePage() {
     <section
       className="relative isolate flex min-h-screen overflow-hidden bg-ink text-white"
       style={{
-        backgroundImage: `linear-gradient(90deg, rgba(17, 31, 24, 0.9), rgba(17, 31, 24, 0.52), rgba(17, 31, 24, 0.08)), linear-gradient(0deg, rgba(17, 31, 24, 0.66), rgba(17, 31, 24, 0.04) 45%), url(${heroImageUrl})`,
+        backgroundImage: `radial-gradient(circle at center, rgba(36, 76, 46, 0.95) 0%, rgba(36, 76, 46, 0.74) 28%, rgba(36, 76, 46, 0.26) 58%, rgba(36, 76, 46, 0.1) 100%), radial-gradient(ellipse at center, rgba(17, 31, 24, 0) 44%, rgba(17, 31, 24, 0.28) 100%), linear-gradient(0deg, rgba(17, 31, 24, 0.52), rgba(17, 31, 24, 0.04) 48%), url(${heroImageUrl})`,
         backgroundPosition: "center",
         backgroundSize: "cover",
       }}

@@ -29,7 +29,7 @@ export function DefaultLayout() {
           }
         >
           <div className="flex items-center justify-between gap-4">
-            <img src={orchidCareLogo} alt="OrchidCare" className="h-auto w-72 max-w-full sm:w-96" />
+            <img src={orchidCareLogo} alt="OrchidCare" className="h-auto w-44 max-w-full sm:w-56" />
 
             <button
               type="button"

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -22,6 +22,7 @@ import {
   saveFavoriteOrchids,
   toggleFavoriteOrchid,
 } from "../utils/favoriteOrchids";
+import { createFavoriteModal, type FavoriteModalState } from "../utils/favoriteModal";
 import { toOrchidDetailPath } from "../utils/orchidRoutes";
 
 type BrowseFilters = {
@@ -54,6 +55,7 @@ export function OrchidBrowsePage() {
   >(null);
   const [filters, setFilters] = useState<BrowseFilters>(defaultBrowseFilters);
   const [favoriteOrchids, setFavoriteOrchids] = useState<OrchidListItem[]>(readFavoriteOrchids);
+  const [favoriteModal, setFavoriteModal] = useState<FavoriteModalState | null>(null);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -134,6 +136,20 @@ export function OrchidBrowsePage() {
     };
   }, [filters, isLoading, page]);
 
+  useEffect(() => {
+    if (!favoriteModal) {
+      return;
+    }
+
+    const closeTimeout = window.setTimeout(() => {
+      setFavoriteModal(null);
+    }, 1600);
+
+    return () => {
+      window.clearTimeout(closeTimeout);
+    };
+  }, [favoriteModal]);
+
   const hasActiveFilters = Object.values(filters).some(Boolean);
   const favoriteSlugs = new Set(favoriteOrchids.map((orchid) => orchid.slug));
 
@@ -158,11 +174,19 @@ export function OrchidBrowsePage() {
     resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  function toggleFavorite(orchid: OrchidListItem) {
+  function toggleFavorite(orchid: OrchidListItem, event: MouseEvent<HTMLButtonElement>) {
     setFavoriteOrchids((currentFavorites) => {
+      const isAlreadyFavorite = currentFavorites.some((favorite) => favorite.slug === orchid.slug);
       const nextFavorites = toggleFavoriteOrchid(orchid, currentFavorites);
 
       saveFavoriteOrchids(nextFavorites);
+      setFavoriteModal(
+        createFavoriteModal(
+          isAlreadyFavorite ? "Removed from favourite" : "Added to favourite",
+          event,
+        ),
+      );
+
       return nextFavorites;
     });
   }
@@ -234,6 +258,17 @@ export function OrchidBrowsePage() {
         </section>
       ) : null}
 
+      {favoriteModal ? (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed z-50 rounded-md bg-mist px-5 py-3 text-center text-sm font-semibold text-rosy shadow-lg"
+          style={{ left: favoriteModal.x, top: favoriteModal.y }}
+        >
+          {favoriteModal.message}
+        </div>
+      ) : null}
+
       {isLoading ? <LoadingState label="Loading orchids" /> : null}
 
       {!isLoading && errorMessage ? (
@@ -267,7 +302,7 @@ export function OrchidBrowsePage() {
                         : `Add ${orchid.commonName} to favorites`
                     }
                     aria-pressed={favoriteSlugs.has(orchid.slug)}
-                    onClick={() => toggleFavorite(orchid)}
+                    onClick={(event) => toggleFavorite(orchid, event)}
                     className={`${favoriteIconClass} ${
                       favoriteSlugs.has(orchid.slug) ? "text-rosy" : "text-white"
                     }`}

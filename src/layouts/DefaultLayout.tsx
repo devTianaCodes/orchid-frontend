@@ -29,7 +29,26 @@ export function DefaultLayout() {
           }
         >
           <div className="flex items-center justify-between gap-4">
-            <img src={orchidCareLogo} alt="OrchidCare" className="h-auto w-44 max-w-full sm:w-56" />
+            <NavLink
+              to="/"
+              end
+              aria-label="Go to OrchidCare home"
+              className="group inline-flex"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <span
+                aria-hidden="true"
+                className="aspect-[1562/285] w-44 max-w-full bg-white transition group-hover:bg-peony sm:w-56"
+                style={{
+                  maskImage: `url(${orchidCareLogo})`,
+                  maskRepeat: "no-repeat",
+                  maskSize: "contain",
+                  WebkitMaskImage: `url(${orchidCareLogo})`,
+                  WebkitMaskRepeat: "no-repeat",
+                  WebkitMaskSize: "contain",
+                }}
+              />
+            </NavLink>
 
             <button
               type="button"
@@ -44,9 +63,6 @@ export function DefaultLayout() {
           </div>
 
           <nav className="hidden translate-y-1 flex-wrap gap-3 lg:flex">
-            <NavLink to="/" end className={navLinkClass}>
-              Home
-            </NavLink>
             <NavLink to="/orchids" className={navLinkClass}>
               Orchids
             </NavLink>
@@ -57,9 +73,6 @@ export function DefaultLayout() {
 
           {isMenuOpen ? (
             <nav id="mobile-navigation" className="flex flex-col gap-3 lg:hidden">
-              <NavLink to="/" end className={navLinkClass} onClick={() => setIsMenuOpen(false)}>
-                Home
-              </NavLink>
               <NavLink to="/orchids" className={navLinkClass} onClick={() => setIsMenuOpen(false)}>
                 Orchids
               </NavLink>

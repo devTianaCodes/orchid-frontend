@@ -64,7 +64,7 @@ export function OrchidDetailPage() {
   }
 
   return (
-    <article className="overflow-hidden rounded-lg border border-peony/50 bg-mist shadow-sm">
+    <article className="overflow-hidden rounded-lg bg-mist shadow-sm">
       <div className="grid gap-0 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
         <div className="aspect-[4/3] bg-peony/40 lg:aspect-auto">
           {orchid.imageUrl ? (
@@ -109,7 +109,7 @@ export function OrchidDetailPage() {
         </div>
       </div>
 
-      <div className="grid gap-6 border-t border-peony/45 p-5 sm:p-6 lg:grid-cols-3 lg:p-8">
+      <div className="grid gap-6 p-5 sm:p-6 lg:grid-cols-3 lg:p-8">
         <CareSection title="Native Region" body={orchid.nativeRegion} />
         <CareSection title="Potting Medium" body={orchid.pottingMedium} />
         <CareSection title={`Bloom: ${formatLabel(orchid.bloomSeason)}`} body={orchid.bloomNotes} />
@@ -119,7 +119,7 @@ export function OrchidDetailPage() {
         </section>
 
         {(orchid.imageSourceUrl || orchid.imageLicense || orchid.imageAttribution) && (
-          <section className="border-t border-peony/45 pt-4 text-sm leading-6 text-bark lg:col-span-3">
+          <section className="pt-4 text-sm leading-6 text-bark lg:col-span-3">
             <h3 className="font-semibold text-ink">Image Credit</h3>
             {orchid.imageAttribution ? <p>{orchid.imageAttribution}</p> : null}
             <p>
@@ -152,7 +152,7 @@ type DetailMetricProps = {
 
 function DetailMetric({ label, value }: DetailMetricProps) {
   return (
-    <div className="rounded-md border border-peony/45 bg-white/70 p-3">
+    <div className="rounded-md bg-white/70 p-3">
       <p className="font-medium text-bark">{label}</p>
       <p className="mt-1 font-semibold text-ink">{value}</p>
     </div>

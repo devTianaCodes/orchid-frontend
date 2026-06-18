@@ -151,7 +151,7 @@ export function OrchidBrowsePage() {
   return (
     <>
       {filterMetadata ? (
-        <section className="rounded-lg border border-peony/50 bg-mist p-4 shadow-sm">
+        <section className="rounded-lg bg-mist p-4 shadow-sm">
           <div className="grid gap-4 md:grid-cols-[minmax(0,1.5fr)_repeat(2,minmax(0,1fr))]">
             <label className="flex flex-col gap-2 text-sm font-medium text-bark">
               Search
@@ -202,7 +202,7 @@ export function OrchidBrowsePage() {
             />
           </div>
 
-          <div className="mt-4 flex justify-end border-t border-peony/45 pt-4">
+          <div className="mt-4 flex justify-end pt-4">
             <button
               type="button"
               onClick={clearFilters}
@@ -236,10 +236,7 @@ export function OrchidBrowsePage() {
           <div className="flex flex-col gap-6">
             <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {orchids.map((orchid) => (
-                <li
-                  key={orchid.slug}
-                  className="overflow-hidden rounded-lg border border-peony/50 bg-mist shadow-sm"
-                >
+                <li key={orchid.slug} className="overflow-hidden rounded-lg bg-mist shadow-sm">
                   <Link to={`/orchids/${orchid.slug}`} className="block h-full">
                     <div className="aspect-[4/3] w-full overflow-hidden bg-peony/40">
                       {orchid.imageUrl ? (

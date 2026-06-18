@@ -67,23 +67,21 @@ export function OrchidDetailPage() {
   return (
     <article className="overflow-hidden rounded-lg bg-mist shadow-sm">
       <div className="grid gap-0 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-stretch">
-        <div className="aspect-[4/3] bg-peony/40 lg:aspect-auto lg:max-h-[34rem]">
-          {orchid.imageUrl ? (
-            <img
-              src={orchid.imageUrl}
-              alt={orchid.imageAlt ?? orchid.commonName}
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="h-full w-full" aria-label={orchid.commonName} />
-          )}
+        <div className="bg-mist p-6 sm:p-7 lg:max-h-[34rem] lg:p-8">
+          <div className="aspect-[4/3] overflow-hidden rounded-md bg-peony/40 lg:h-full lg:aspect-auto">
+            {orchid.imageUrl ? (
+              <img
+                src={orchid.imageUrl}
+                alt={orchid.imageAlt ?? orchid.commonName}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="h-full w-full" aria-label={orchid.commonName} />
+            )}
+          </div>
         </div>
 
         <div className="flex flex-col gap-6 p-5 sm:p-6 lg:p-8">
-          <Link to="/orchids" className="text-sm font-semibold text-rosy hover:underline">
-            Back to orchids
-          </Link>
-
           <header>
             <p className="text-sm font-medium uppercase tracking-wide text-bark">{orchid.genus}</p>
             <h2 className="mt-2 text-3xl font-bold leading-tight sm:text-4xl">
@@ -118,6 +116,15 @@ export function OrchidDetailPage() {
           <h3 className="text-lg font-semibold">Care Summary</h3>
           <p className="mt-2 max-w-4xl text-base leading-7 text-ink/80">{orchid.careSummary}</p>
         </section>
+
+        <div className="flex justify-center py-4 lg:col-span-3">
+          <Link
+            to="/orchids"
+            className="inline-flex h-10 items-center justify-center rounded-md border border-moss/45 px-4 text-sm font-semibold text-rosy transition hover:border-rosy"
+          >
+            Back to orchids
+          </Link>
+        </div>
       </div>
     </article>
   );

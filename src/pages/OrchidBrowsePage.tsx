@@ -237,7 +237,7 @@ export function OrchidBrowsePage() {
             <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {orchids.map((orchid) => (
                 <li key={orchid.slug} className="overflow-hidden rounded-lg bg-mist shadow-sm">
-                  <Link to={`/orchids/${orchid.slug}`} className="block h-full">
+                  <Link to={`/orchids/${orchid.slug}`} className="group block h-full">
                     <div className="aspect-[4/3] w-full overflow-hidden bg-peony/40">
                       {orchid.imageUrl ? (
                         <img
@@ -249,7 +249,7 @@ export function OrchidBrowsePage() {
                         <div className="h-full w-full" aria-label={orchid.commonName} />
                       )}
                     </div>
-                    <div className="space-y-3 p-4">
+                    <div className="flex min-h-64 flex-col gap-3 p-4">
                       <div>
                         <h2 className="text-xl font-semibold leading-7">{orchid.commonName}</h2>
                         <p className="text-sm italic leading-6 text-bark">
@@ -257,18 +257,11 @@ export function OrchidBrowsePage() {
                         </p>
                       </div>
                       <p className="text-sm leading-6 text-ink/80">{orchid.shortDescription}</p>
-                      <dl className="grid grid-cols-2 gap-3 text-sm">
-                        <div>
-                          <dt className="font-medium text-bark">Difficulty</dt>
-                          <dd className="capitalize text-ink">{orchid.difficulty}</dd>
-                        </div>
-                        <div>
-                          <dt className="font-medium text-bark">Light</dt>
-                          <dd className="capitalize text-ink">
-                            {orchid.lightNeeds.replace("-", " ")}
-                          </dd>
-                        </div>
-                      </dl>
+                      <div className="mt-auto flex -translate-y-[15px] justify-center pt-2">
+                        <span className="inline-flex h-10 items-center justify-center rounded-md border border-moss/45 px-4 text-sm font-semibold text-rosy transition group-hover:border-rosy">
+                          Explore
+                        </span>
+                      </div>
                     </div>
                   </Link>
                 </li>

@@ -17,6 +17,11 @@ import {
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
 import { LoadingState } from "../components/LoadingState";
+import {
+  readFavoriteOrchids,
+  saveFavoriteOrchids,
+  toggleFavoriteOrchid,
+} from "../utils/favoriteOrchids";
 
 type BrowseFilters = {
   q: string;
@@ -38,7 +43,7 @@ const defaultBrowseFilters: BrowseFilters = {
 
 const orchidPageSize = 12;
 const favoriteIconClass =
-  "absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center text-2xl leading-none text-white";
+  "absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center text-2xl leading-none drop-shadow-[0_1px_2px_rgba(23,36,25,0.65)] transition hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white";
 
 export function OrchidBrowsePage() {
   const [orchids, setOrchids] = useState<OrchidListItem[]>([]);
@@ -47,6 +52,7 @@ export function OrchidBrowsePage() {
     OrchidFilterMetadataResponse["filters"] | null
   >(null);
   const [filters, setFilters] = useState<BrowseFilters>(defaultBrowseFilters);
+  const [favoriteOrchids, setFavoriteOrchids] = useState<OrchidListItem[]>(readFavoriteOrchids);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -128,6 +134,7 @@ export function OrchidBrowsePage() {
   }, [filters, isLoading, page]);
 
   const hasActiveFilters = Object.values(filters).some(Boolean);
+  const favoriteSlugs = new Set(favoriteOrchids.map((orchid) => orchid.slug));
 
   function updateFilter<TName extends keyof BrowseFilters>(
     name: TName,
@@ -148,6 +155,15 @@ export function OrchidBrowsePage() {
   function changePage(nextPage: number) {
     setPage(nextPage);
     resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function toggleFavorite(orchid: OrchidListItem) {
+    setFavoriteOrchids((currentFavorites) => {
+      const nextFavorites = toggleFavoriteOrchid(orchid, currentFavorites);
+
+      saveFavoriteOrchids(nextFavorites);
+      return nextFavorites;
+    });
   }
 
   return (
@@ -242,10 +258,22 @@ export function OrchidBrowsePage() {
                   key={orchid.slug}
                   className="relative overflow-hidden rounded-lg bg-mist shadow-sm"
                 >
+                  <button
+                    type="button"
+                    aria-label={
+                      favoriteSlugs.has(orchid.slug)
+                        ? `Remove ${orchid.commonName} from favorites`
+                        : `Add ${orchid.commonName} to favorites`
+                    }
+                    aria-pressed={favoriteSlugs.has(orchid.slug)}
+                    onClick={() => toggleFavorite(orchid)}
+                    className={`${favoriteIconClass} ${
+                      favoriteSlugs.has(orchid.slug) ? "text-red-600" : "text-white"
+                    }`}
+                  >
+                    ♥
+                  </button>
                   <Link to={`/orchids/${orchid.slug}`} className="group block h-full">
-                    <span aria-hidden="true" className={favoriteIconClass}>
-                      ♥
-                    </span>
                     <div className="aspect-[4/3] w-full overflow-hidden bg-peony/40">
                       {orchid.imageUrl ? (
                         <img

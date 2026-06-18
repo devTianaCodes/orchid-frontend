@@ -52,7 +52,7 @@ function FavoriteOrchidCard({ orchid }: FavoriteOrchidCardProps) {
     <li className="relative overflow-hidden rounded-lg bg-mist shadow-sm">
       <span
         aria-label="Saved as favorite"
-        className="absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center text-2xl leading-none text-red-600 drop-shadow-[0_1px_2px_rgba(23,36,25,0.65)]"
+        className="absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center text-2xl leading-none text-rosy drop-shadow-[0_1px_2px_rgba(23,36,25,0.65)]"
       >
         ♥
       </span>

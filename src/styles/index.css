@@ -16,10 +16,12 @@
 
 :root {
   color: #172419;
-  background: #43754a;
+  background: #e8f4eb;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
+  background: #e8f4eb;
   margin: 0;
+  scrollbar-gutter: stable;
 }

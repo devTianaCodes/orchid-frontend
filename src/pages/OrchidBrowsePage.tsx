@@ -268,7 +268,7 @@ export function OrchidBrowsePage() {
                     aria-pressed={favoriteSlugs.has(orchid.slug)}
                     onClick={() => toggleFavorite(orchid)}
                     className={`${favoriteIconClass} ${
-                      favoriteSlugs.has(orchid.slug) ? "text-red-600" : "text-white"
+                      favoriteSlugs.has(orchid.slug) ? "text-rosy" : "text-white"
                     }`}
                   >
                     ♥

@@ -3,28 +3,46 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 
 import orchidCareLogo from "../assets/orchidcare-logo.png";
 
+const homeHeroImageUrl =
+  "https://images.unsplash.com/photo-1571677179476-ab32559a6c7c?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=80&w=3000";
+
 export function DefaultLayout() {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const isOrchidsPage = location.pathname === "/orchids";
+  const isFavoritesPage = location.pathname === "/favorites";
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     `inline-flex h-12 w-32 items-center justify-center rounded-md px-5 text-base font-bold text-rosy transition ${
       isActive ? "bg-peony" : "bg-white hover:bg-peony-soft"
     }`;
+  const hasSoftHeroBackground = isOrchidsPage || isFavoritesPage;
+  const mainStyle = hasSoftHeroBackground
+    ? {
+        backgroundAttachment: "fixed",
+        backgroundColor: "#e8f4eb",
+        backgroundImage: `linear-gradient(rgba(67, 117, 74, 0.6), rgba(67, 117, 74, 0.6)), url(${homeHeroImageUrl})`,
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }
+    : undefined;
+  const mainClassName = isHomePage
+    ? "min-h-screen bg-ink text-white"
+    : `min-h-screen ${hasSoftHeroBackground ? "text-ink" : "bg-[#e8f4eb] text-ink"}`;
 
   return (
-    <main className={`min-h-screen ${isHomePage ? "bg-ink text-white" : "bg-sage text-ink"}`}>
+    <main className={mainClassName} style={mainStyle}>
       <section
         className={
           isHomePage
             ? "flex min-h-screen w-full flex-col"
-            : "mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8"
+            : "mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 pb-8 pt-6 sm:px-6 lg:px-8"
         }
       >
         <header
           className={
             isHomePage
-              ? "absolute left-0 right-0 top-0 z-10 mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-6 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8"
+              ? "absolute left-0 right-0 top-0 z-10 mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 pt-6 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8"
               : "flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between"
           }
         >

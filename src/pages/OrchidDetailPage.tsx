@@ -1,14 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { getOrchidBySlug, type OrchidDetail } from "../api/orchidApi";
 import { ErrorState } from "../components/ErrorState";
 import { LoadingState } from "../components/LoadingState";
+import {
+  readFavoriteOrchids,
+  saveFavoriteOrchids,
+  toggleFavoriteOrchid,
+} from "../utils/favoriteOrchids";
+import { createFavoriteModal, type FavoriteModalState } from "../utils/favoriteModal";
 import { toApiOrchidSlug } from "../utils/orchidRoutes";
 
 export function OrchidDetailPage() {
   const { slug } = useParams();
   const [orchid, setOrchid] = useState<OrchidDetail | null>(null);
+  const [favoriteOrchids, setFavoriteOrchids] = useState(readFavoriteOrchids);
+  const [favoriteModal, setFavoriteModal] = useState<FavoriteModalState | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const slugError = slug ? null : "Missing orchid slug.";
@@ -47,6 +55,41 @@ export function OrchidDetailPage() {
     };
   }, [slug]);
 
+  useEffect(() => {
+    if (!favoriteModal) {
+      return;
+    }
+
+    const closeTimeout = window.setTimeout(() => {
+      setFavoriteModal(null);
+    }, 1600);
+
+    return () => {
+      window.clearTimeout(closeTimeout);
+    };
+  }, [favoriteModal]);
+
+  function toggleFavorite(event: MouseEvent<HTMLButtonElement>) {
+    if (!orchid) {
+      return;
+    }
+
+    setFavoriteOrchids((currentFavorites) => {
+      const isAlreadyFavorite = currentFavorites.some((favorite) => favorite.slug === orchid.slug);
+      const nextFavorites = toggleFavoriteOrchid(orchid, currentFavorites);
+
+      saveFavoriteOrchids(nextFavorites);
+      setFavoriteModal(
+        createFavoriteModal(
+          isAlreadyFavorite ? "Removed from favourite" : "Added to favourite",
+          event,
+        ),
+      );
+
+      return nextFavorites;
+    });
+  }
+
   if (slugError) {
     return <ErrorState title="Could not load orchid" message={slugError} />;
   }
@@ -64,8 +107,21 @@ export function OrchidDetailPage() {
     );
   }
 
+  const isFavorite = favoriteOrchids.some((favorite) => favorite.slug === orchid.slug);
+
   return (
     <article className="overflow-hidden rounded-lg bg-mist shadow-sm">
+      {favoriteModal ? (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed z-50 rounded-md bg-mist px-5 py-3 text-center text-sm font-semibold text-rosy shadow-lg"
+          style={{ left: favoriteModal.x, top: favoriteModal.y }}
+        >
+          {favoriteModal.message}
+        </div>
+      ) : null}
+
       <div className="grid gap-0 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-stretch">
         <div className="bg-mist p-6 sm:p-7 lg:max-h-[34rem] lg:p-8">
           <div className="aspect-[4/3] overflow-hidden rounded-md bg-peony/40 lg:h-full lg:aspect-auto">
@@ -83,7 +139,26 @@ export function OrchidDetailPage() {
 
         <div className="flex flex-col gap-6 p-5 sm:p-6 lg:p-8">
           <header>
-            <p className="text-sm font-medium uppercase tracking-wide text-bark">{orchid.genus}</p>
+            <div className="flex items-start justify-between gap-4">
+              <p className="text-sm font-medium uppercase tracking-wide text-bark">
+                {orchid.genus}
+              </p>
+              <button
+                type="button"
+                aria-label={
+                  isFavorite
+                    ? `Remove ${orchid.commonName} from favorites`
+                    : `Add ${orchid.commonName} to favorites`
+                }
+                aria-pressed={isFavorite}
+                onClick={toggleFavorite}
+                className={`inline-flex h-10 w-10 shrink-0 items-center justify-center text-2xl leading-none drop-shadow-[0_1px_2px_rgba(23,36,25,0.65)] transition hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white ${
+                  isFavorite ? "text-rosy" : "text-white"
+                }`}
+              >
+                ♥
+              </button>
+            </div>
             <h2 className="mt-2 text-3xl font-bold leading-tight sm:text-4xl">
               {orchid.commonName}
             </h2>

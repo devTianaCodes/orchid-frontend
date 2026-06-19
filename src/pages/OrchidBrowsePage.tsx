@@ -16,6 +16,7 @@ import {
 } from "../api/orchidApi";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
+import { FavoriteFeedback } from "../components/FavoriteFeedback";
 import { LoadingState } from "../components/LoadingState";
 import {
   readFavoriteOrchids,
@@ -136,20 +137,6 @@ export function OrchidBrowsePage() {
     };
   }, [filters, isLoading, page]);
 
-  useEffect(() => {
-    if (!favoriteModal) {
-      return;
-    }
-
-    const closeTimeout = window.setTimeout(() => {
-      setFavoriteModal(null);
-    }, 1600);
-
-    return () => {
-      window.clearTimeout(closeTimeout);
-    };
-  }, [favoriteModal]);
-
   const hasActiveFilters = Object.values(filters).some(Boolean);
   const favoriteSlugs = new Set(favoriteOrchids.map((orchid) => orchid.slug));
 
@@ -258,16 +245,7 @@ export function OrchidBrowsePage() {
         </section>
       ) : null}
 
-      {favoriteModal ? (
-        <div
-          role="status"
-          aria-live="polite"
-          className="fixed z-50 rounded-md bg-mist px-5 py-3 text-center text-sm font-semibold text-rosy shadow-lg"
-          style={{ left: favoriteModal.x, top: favoriteModal.y }}
-        >
-          {favoriteModal.message}
-        </div>
-      ) : null}
+      <FavoriteFeedback feedback={favoriteModal} onClose={() => setFavoriteModal(null)} />
 
       {isLoading ? <LoadingState label="Loading orchids" /> : null}
 

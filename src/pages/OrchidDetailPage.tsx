@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 
 import { getOrchidBySlug, type OrchidDetail } from "../api/orchidApi";
 import { ErrorState } from "../components/ErrorState";
+import { FavoriteFeedback } from "../components/FavoriteFeedback";
 import { LoadingState } from "../components/LoadingState";
 import {
   readFavoriteOrchids,
@@ -55,20 +56,6 @@ export function OrchidDetailPage() {
     };
   }, [slug]);
 
-  useEffect(() => {
-    if (!favoriteModal) {
-      return;
-    }
-
-    const closeTimeout = window.setTimeout(() => {
-      setFavoriteModal(null);
-    }, 1600);
-
-    return () => {
-      window.clearTimeout(closeTimeout);
-    };
-  }, [favoriteModal]);
-
   function toggleFavorite(event: MouseEvent<HTMLButtonElement>) {
     if (!orchid) {
       return;
@@ -111,16 +98,7 @@ export function OrchidDetailPage() {
 
   return (
     <article className="overflow-hidden rounded-lg bg-mist shadow-sm">
-      {favoriteModal ? (
-        <div
-          role="status"
-          aria-live="polite"
-          className="fixed z-50 rounded-md bg-mist px-5 py-3 text-center text-sm font-semibold text-rosy shadow-lg"
-          style={{ left: favoriteModal.x, top: favoriteModal.y }}
-        >
-          {favoriteModal.message}
-        </div>
-      ) : null}
+      <FavoriteFeedback feedback={favoriteModal} onClose={() => setFavoriteModal(null)} />
 
       <div className="grid gap-0 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-stretch">
         <div className="bg-mist p-6 sm:p-7 lg:max-h-[34rem] lg:p-8">

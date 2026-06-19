@@ -1,8 +1,9 @@
-import { useEffect, useState, type MouseEvent } from "react";
+import { useState, type MouseEvent } from "react";
 import { Link } from "react-router-dom";
 
 import type { OrchidListItem } from "../api/orchidApi";
 import { EmptyState } from "../components/EmptyState";
+import { FavoriteFeedback } from "../components/FavoriteFeedback";
 import {
   readFavoriteOrchids,
   saveFavoriteOrchids,
@@ -14,20 +15,6 @@ import { toOrchidDetailPath } from "../utils/orchidRoutes";
 export function FavoritesPage() {
   const [favoriteOrchids, setFavoriteOrchids] = useState<OrchidListItem[]>(readFavoriteOrchids);
   const [favoriteModal, setFavoriteModal] = useState<FavoriteModalState | null>(null);
-
-  useEffect(() => {
-    if (!favoriteModal) {
-      return;
-    }
-
-    const closeTimeout = window.setTimeout(() => {
-      setFavoriteModal(null);
-    }, 1600);
-
-    return () => {
-      window.clearTimeout(closeTimeout);
-    };
-  }, [favoriteModal]);
 
   function toggleFavorite(orchid: OrchidListItem, event: MouseEvent<HTMLButtonElement>) {
     setFavoriteOrchids((currentFavorites) => {
@@ -60,16 +47,7 @@ export function FavoritesPage() {
 
   return (
     <section className="flex flex-col gap-5">
-      {favoriteModal ? (
-        <div
-          role="status"
-          aria-live="polite"
-          className="fixed z-50 rounded-md bg-mist px-5 py-3 text-center text-sm font-semibold text-rosy shadow-lg"
-          style={{ left: favoriteModal.x, top: favoriteModal.y }}
-        >
-          {favoriteModal.message}
-        </div>
-      ) : null}
+      <FavoriteFeedback feedback={favoriteModal} onClose={() => setFavoriteModal(null)} />
 
       <div className="rounded-lg bg-mist p-5 shadow-sm">
         <p className="text-sm font-medium uppercase tracking-wide text-bark">Favorites</p>

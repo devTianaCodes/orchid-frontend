@@ -16,6 +16,7 @@ export type OrchidListItem = {
   scientificName: string;
   genus: string;
   shortDescription: string;
+  isRare: boolean;
   growthType: OrchidGrowthType;
   difficulty: OrchidDifficulty;
   lightNeeds: OrchidLightNeeds;
@@ -48,6 +49,7 @@ export type OrchidListFilters = {
   temperature?: number;
   growthType?: OrchidGrowthType;
   bloomSeason?: OrchidBloomSeason;
+  isRare?: boolean;
   page?: number;
   pageSize?: number;
 };
@@ -104,6 +106,7 @@ export function listOrchids(filters: OrchidListFilters = {}) {
   addSearchParam(searchParams, "temperature", filters.temperature);
   addSearchParam(searchParams, "growthType", filters.growthType);
   addSearchParam(searchParams, "bloomSeason", filters.bloomSeason);
+  addSearchParam(searchParams, "isRare", filters.isRare);
   addSearchParam(searchParams, "page", filters.page);
   addSearchParam(searchParams, "pageSize", filters.pageSize);
 
@@ -123,7 +126,7 @@ export function getOrchidFilters() {
 function addSearchParam(
   searchParams: URLSearchParams,
   name: string,
-  value: number | string | undefined,
+  value: boolean | number | string | undefined,
 ) {
   if (value === undefined || value === "") {
     return;

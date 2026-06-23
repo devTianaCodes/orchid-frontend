@@ -2,6 +2,10 @@ import type { OrchidListItem } from "../api/orchidApi";
 
 const favoriteOrchidsStorageKey = "orchidcare.favoriteOrchids";
 
+type StoredOrchidListItem = Omit<OrchidListItem, "isRare"> & {
+  isRare?: boolean;
+};
+
 export function readFavoriteOrchids() {
   if (typeof window === "undefined") {
     return [];
@@ -20,7 +24,7 @@ export function readFavoriteOrchids() {
       return [];
     }
 
-    return parsedFavorites.filter(isOrchidListItem);
+    return parsedFavorites.flatMap(normalizeOrchidListItem);
   } catch {
     return [];
   }
@@ -44,18 +48,32 @@ export function toggleFavoriteOrchid(orchid: OrchidListItem, favorites: OrchidLi
   return [orchid, ...favorites];
 }
 
-function isOrchidListItem(value: unknown): value is OrchidListItem {
+function isStoredOrchidListItem(value: unknown): value is StoredOrchidListItem {
   if (!value || typeof value !== "object") {
     return false;
   }
 
-  const orchid = value as Partial<OrchidListItem>;
+  const orchid = value as Partial<StoredOrchidListItem>;
 
   return (
     typeof orchid.slug === "string" &&
     typeof orchid.commonName === "string" &&
     typeof orchid.scientificName === "string" &&
     typeof orchid.genus === "string" &&
-    typeof orchid.shortDescription === "string"
+    typeof orchid.shortDescription === "string" &&
+    (typeof orchid.isRare === "boolean" || orchid.isRare === undefined)
   );
+}
+
+function normalizeOrchidListItem(value: unknown): OrchidListItem[] {
+  if (!isStoredOrchidListItem(value)) {
+    return [];
+  }
+
+  return [
+    {
+      ...value,
+      isRare: value.isRare ?? false,
+    },
+  ];
 }

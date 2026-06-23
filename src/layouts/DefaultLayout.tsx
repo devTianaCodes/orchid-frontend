@@ -14,7 +14,7 @@ export function DefaultLayout() {
   const isOrchidDetailPage = location.pathname.startsWith("/orchids/");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `inline-flex h-12 w-32 items-center justify-center rounded-md px-5 text-base font-bold text-rosy transition ${
+    `inline-flex h-12 w-32 items-center justify-center rounded-md px-5 text-base font-bold text-rosy transition focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy ${
       isActive ? "bg-peony-soft" : "bg-white hover:bg-peony-soft"
     }`;
   const hasSoftHeroBackground = isOrchidsPage || isFavoritesPage || isOrchidDetailPage;
@@ -52,7 +52,7 @@ export function DefaultLayout() {
               to="/"
               end
               aria-label="Go to OrchidCare home"
-              className="group inline-flex transition-transform hover:scale-105"
+              className="group inline-flex rounded-md transition-transform hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy"
               onClick={() => setIsMenuOpen(false)}
             >
               <span
@@ -71,7 +71,7 @@ export function DefaultLayout() {
 
             <button
               type="button"
-              className="inline-flex h-12 w-12 shrink-0 translate-y-1 items-center justify-center rounded-md bg-white text-2xl font-bold leading-none text-rosy transition hover:bg-peony-soft lg:hidden"
+              className="inline-flex h-12 w-12 shrink-0 translate-y-1 items-center justify-center rounded-md bg-white text-2xl font-bold leading-none text-rosy transition hover:bg-peony-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy lg:hidden"
               aria-expanded={isMenuOpen}
               aria-controls="mobile-navigation"
               aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}

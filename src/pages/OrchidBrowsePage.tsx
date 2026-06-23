@@ -237,7 +237,7 @@ export function OrchidBrowsePage() {
               type="button"
               onClick={clearFilters}
               disabled={!hasActiveFilters}
-              className="h-10 rounded-md border border-moss/45 px-4 text-sm font-semibold text-rosy transition hover:border-rosy disabled:cursor-not-allowed disabled:opacity-45"
+              className="h-10 rounded-md border border-moss/45 px-4 text-sm font-semibold text-rosy transition hover:border-rosy focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy disabled:cursor-not-allowed disabled:opacity-45"
             >
               Clear
             </button>
@@ -287,7 +287,10 @@ export function OrchidBrowsePage() {
                   >
                     ♥
                   </button>
-                  <Link to={toOrchidDetailPath(orchid.slug)} className="group block h-full">
+                  <Link
+                    to={toOrchidDetailPath(orchid.slug)}
+                    className="group block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy"
+                  >
                     <div className="aspect-[4/3] w-full overflow-hidden bg-peony/40">
                       {orchid.imageUrl ? (
                         <img
@@ -370,7 +373,7 @@ function PaginationControls({ pagination, onPageChange }: PaginationControlsProp
         type="button"
         onClick={() => onPageChange(pagination.page - 1)}
         disabled={!pagination.hasPreviousPage}
-        className="h-11 min-w-24 rounded-md border border-moss/45 bg-mist px-4 font-semibold text-rosy transition hover:border-rosy disabled:cursor-not-allowed disabled:opacity-45"
+        className="h-11 min-w-24 rounded-md border border-moss/45 bg-mist px-4 font-semibold text-rosy transition hover:border-rosy focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy disabled:cursor-not-allowed disabled:opacity-45"
       >
         Previous
       </button>
@@ -383,7 +386,7 @@ function PaginationControls({ pagination, onPageChange }: PaginationControlsProp
         type="button"
         onClick={() => onPageChange(pagination.page + 1)}
         disabled={!pagination.hasNextPage}
-        className="h-11 min-w-24 rounded-md border border-moss/45 bg-mist px-4 font-semibold text-rosy transition hover:border-rosy disabled:cursor-not-allowed disabled:opacity-45"
+        className="h-11 min-w-24 rounded-md border border-moss/45 bg-mist px-4 font-semibold text-rosy transition hover:border-rosy focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy disabled:cursor-not-allowed disabled:opacity-45"
       >
         Next
       </button>

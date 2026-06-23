@@ -28,7 +28,8 @@ export function FavoriteFeedback({ feedback, onClose }: FavoriteFeedbackProps) {
     <div
       role="status"
       aria-live="polite"
-      className="fixed z-50 rounded-md bg-mist px-5 py-3 text-center text-sm font-semibold text-rosy shadow-lg"
+      aria-atomic="true"
+      className="pointer-events-none fixed z-50 max-w-[calc(100vw-2rem)] rounded-md bg-mist px-5 py-3 text-center text-sm font-semibold text-rosy shadow-lg"
       style={{ left: feedback.x, top: feedback.y }}
     >
       {feedback.message}

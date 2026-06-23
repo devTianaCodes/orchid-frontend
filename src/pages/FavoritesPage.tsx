@@ -36,7 +36,7 @@ export function FavoritesPage() {
         <div className="flex justify-center">
           <Link
             to="/orchids"
-            className="inline-flex h-11 items-center justify-center rounded-md border border-moss/45 bg-mist px-5 text-sm font-semibold text-rosy transition hover:border-rosy"
+            className="inline-flex h-11 items-center justify-center rounded-md border border-moss/45 bg-mist px-5 text-sm font-semibold text-rosy transition hover:border-rosy focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy"
           >
             Browse orchids
           </Link>
@@ -80,7 +80,10 @@ function FavoriteOrchidCard({ orchid, onToggleFavorite }: FavoriteOrchidCardProp
       >
         ♥
       </button>
-      <Link to={toOrchidDetailPath(orchid.slug)} className="group block h-full">
+      <Link
+        to={toOrchidDetailPath(orchid.slug)}
+        className="group block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy"
+      >
         <div className="aspect-[4/3] w-full overflow-hidden bg-peony/40">
           {orchid.imageUrl ? (
             <img

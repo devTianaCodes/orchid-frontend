@@ -173,7 +173,7 @@ export function OrchidDetailPage() {
         <div className="flex justify-center py-4 lg:col-span-3">
           <Link
             to="/orchids"
-            className="inline-flex h-10 items-center justify-center rounded-md border border-moss/45 px-4 text-sm font-semibold text-rosy transition hover:border-rosy"
+            className="inline-flex h-10 items-center justify-center rounded-md border border-moss/45 px-4 text-sm font-semibold text-rosy transition hover:border-rosy focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy"
           >
             Back to orchids
           </Link>

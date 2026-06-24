@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react";
-import { Link } from "react-router-dom";
 
 import {
   getOrchidFilters,
@@ -18,13 +17,14 @@ import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
 import { FavoriteFeedback } from "../components/FavoriteFeedback";
 import { LoadingState } from "../components/LoadingState";
+import { OrchidCard } from "../components/OrchidCard";
+import { PaginationControls } from "../components/PaginationControls";
 import {
   readFavoriteOrchids,
   saveFavoriteOrchids,
   toggleFavoriteOrchid,
 } from "../utils/favoriteOrchids";
 import { createFavoriteModal, type FavoriteModalState } from "../utils/favoriteModal";
-import { toOrchidDetailPath } from "../utils/orchidRoutes";
 
 type BrowseFilters = {
   q: string;
@@ -45,8 +45,6 @@ const defaultBrowseFilters: BrowseFilters = {
 };
 
 const orchidPageSize = 12;
-const favoriteIconClass =
-  "absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center text-2xl leading-none drop-shadow-[0_1px_2px_rgba(23,36,25,0.65)] transition hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white";
 
 export function OrchidBrowsePage() {
   const [orchids, setOrchids] = useState<OrchidListItem[]>([]);
@@ -268,56 +266,12 @@ export function OrchidBrowsePage() {
           <div className="flex flex-col gap-6">
             <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {orchids.map((orchid) => (
-                <li
+                <OrchidCard
                   key={orchid.slug}
-                  className="relative overflow-hidden rounded-lg bg-mist shadow-sm"
-                >
-                  <button
-                    type="button"
-                    aria-label={
-                      favoriteSlugs.has(orchid.slug)
-                        ? `Remove ${orchid.commonName} from favorites`
-                        : `Add ${orchid.commonName} to favorites`
-                    }
-                    aria-pressed={favoriteSlugs.has(orchid.slug)}
-                    onClick={(event) => toggleFavorite(orchid, event)}
-                    className={`${favoriteIconClass} ${
-                      favoriteSlugs.has(orchid.slug) ? "text-rosy" : "text-white"
-                    }`}
-                  >
-                    ♥
-                  </button>
-                  <Link
-                    to={toOrchidDetailPath(orchid.slug)}
-                    className="group block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy"
-                  >
-                    <div className="aspect-[4/3] w-full overflow-hidden bg-peony/40">
-                      {orchid.imageUrl ? (
-                        <img
-                          src={orchid.imageUrl}
-                          alt={orchid.imageAlt ?? orchid.commonName}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="h-full w-full" aria-label={orchid.commonName} />
-                      )}
-                    </div>
-                    <div className="flex min-h-64 flex-col gap-3 p-4">
-                      <div>
-                        <h2 className="text-xl font-semibold leading-7">{orchid.commonName}</h2>
-                        <p className="text-sm italic leading-6 text-bark">
-                          {orchid.scientificName}
-                        </p>
-                      </div>
-                      <p className="text-sm leading-6 text-ink/80">{orchid.shortDescription}</p>
-                      <div className="mt-auto flex -translate-y-[15px] justify-center pt-2">
-                        <span className="inline-flex h-10 items-center justify-center rounded-md border border-moss/45 px-4 text-sm font-semibold text-rosy transition group-hover:border-rosy">
-                          Explore
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
+                  orchid={orchid}
+                  isFavorite={favoriteSlugs.has(orchid.slug)}
+                  onToggleFavorite={toggleFavorite}
+                />
               ))}
             </ul>
 
@@ -355,42 +309,6 @@ function SelectFilter({ label, value, options, onChange }: SelectFilterProps) {
         ))}
       </select>
     </label>
-  );
-}
-
-type PaginationControlsProps = {
-  pagination: OrchidListPagination;
-  onPageChange: (page: number) => void;
-};
-
-function PaginationControls({ pagination, onPageChange }: PaginationControlsProps) {
-  return (
-    <nav
-      aria-label="Orchid pages"
-      className="flex flex-wrap items-center justify-center gap-3 text-sm"
-    >
-      <button
-        type="button"
-        onClick={() => onPageChange(pagination.page - 1)}
-        disabled={!pagination.hasPreviousPage}
-        className="h-11 min-w-24 rounded-md border border-moss/45 bg-mist px-4 font-semibold text-rosy transition hover:border-rosy focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy disabled:cursor-not-allowed disabled:opacity-45"
-      >
-        Previous
-      </button>
-
-      <span className="min-w-28 text-center font-medium text-white" aria-live="polite">
-        Page {pagination.page} of {pagination.totalPages}
-      </span>
-
-      <button
-        type="button"
-        onClick={() => onPageChange(pagination.page + 1)}
-        disabled={!pagination.hasNextPage}
-        className="h-11 min-w-24 rounded-md border border-moss/45 bg-mist px-4 font-semibold text-rosy transition hover:border-rosy focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy disabled:cursor-not-allowed disabled:opacity-45"
-      >
-        Next
-      </button>
-    </nav>
   );
 }
 

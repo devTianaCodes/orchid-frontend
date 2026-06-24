@@ -11,13 +11,15 @@ export function DefaultLayout() {
   const isHomePage = location.pathname === "/";
   const isOrchidsPage = location.pathname === "/orchids";
   const isFavoritesPage = location.pathname === "/favorites";
+  const isRareOrchidsPage = location.pathname === "/rare-orchids";
   const isOrchidDetailPage = location.pathname.startsWith("/orchids/");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     `inline-flex h-12 w-32 items-center justify-center rounded-md px-5 text-base font-bold text-rosy transition focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy ${
       isActive ? "bg-peony-soft" : "bg-white hover:bg-peony-soft"
     }`;
-  const hasSoftHeroBackground = isOrchidsPage || isFavoritesPage || isOrchidDetailPage;
+  const hasSoftHeroBackground =
+    isOrchidsPage || isFavoritesPage || isRareOrchidsPage || isOrchidDetailPage;
   const mainStyle = hasSoftHeroBackground
     ? {
         backgroundAttachment: "fixed",

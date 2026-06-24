@@ -90,6 +90,9 @@ export function DefaultLayout() {
             <NavLink to="/favorites" className={navLinkClass}>
               Favorites
             </NavLink>
+            <NavLink to="/rare-orchids" className={navLinkClass}>
+              Rare Orchids
+            </NavLink>
           </nav>
 
           {isMenuOpen ? (
@@ -103,6 +106,13 @@ export function DefaultLayout() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Favorites
+              </NavLink>
+              <NavLink
+                to="/rare-orchids"
+                className={navLinkClass}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Rare Orchids
               </NavLink>
             </nav>
           ) : null}

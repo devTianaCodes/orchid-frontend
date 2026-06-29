@@ -10,6 +10,7 @@ export function DefaultLayout() {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const isOrchidsPage = location.pathname === "/orchids";
+  const isCareGuidePage = location.pathname === "/care-guide";
   const isFavoritesPage = location.pathname === "/favorites";
   const isRareOrchidsPage = location.pathname === "/rare-orchids";
   const isOrchidDetailPage = location.pathname.startsWith("/orchids/");
@@ -19,7 +20,7 @@ export function DefaultLayout() {
       isActive ? "bg-peony-soft" : "bg-white hover:bg-peony-soft"
     }`;
   const hasSoftHeroBackground =
-    isOrchidsPage || isFavoritesPage || isRareOrchidsPage || isOrchidDetailPage;
+    isOrchidsPage || isCareGuidePage || isFavoritesPage || isRareOrchidsPage || isOrchidDetailPage;
   const mainStyle = hasSoftHeroBackground
     ? {
         backgroundAttachment: "fixed",
@@ -87,6 +88,9 @@ export function DefaultLayout() {
             <NavLink to="/orchids" className={navLinkClass}>
               Orchids
             </NavLink>
+            <NavLink to="/care-guide" className={navLinkClass}>
+              Care Guide
+            </NavLink>
             <NavLink to="/favorites" className={navLinkClass}>
               Favorites
             </NavLink>
@@ -99,6 +103,13 @@ export function DefaultLayout() {
             <nav id="mobile-navigation" className="flex flex-col gap-3 lg:hidden">
               <NavLink to="/orchids" className={navLinkClass} onClick={() => setIsMenuOpen(false)}>
                 Orchids
+              </NavLink>
+              <NavLink
+                to="/care-guide"
+                className={navLinkClass}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Care Guide
               </NavLink>
               <NavLink
                 to="/favorites"

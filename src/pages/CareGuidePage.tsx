@@ -11,8 +11,8 @@ const careTopics: CareTopic[] = [
   {
     title: "Watering",
     imageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/5/59/Phalaenopsis_amabilis_Orchi_198.jpg",
-    imageAlt: "White Phalaenopsis orchid flowers with healthy green leaves.",
+      "https://upload.wikimedia.org/wikipedia/commons/0/04/Orchid_-_Phalaenopsis_%2849591245677%29.jpg",
+    imageAlt: "Potted Phalaenopsis orchid showing healthy roots and drainage needs.",
     summary:
       "Water when the potting mix is nearly dry and the roots look silvery, then let extra water drain away completely.",
     likes: ["Room-temperature water", "A clear wet-dry rhythm", "Free drainage after watering"],
@@ -30,8 +30,8 @@ const careTopics: CareTopic[] = [
   {
     title: "Humidity",
     imageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/f/f1/Vanda_coerulea_-_Blue_Orchid_-_Kew.jpg",
-    imageAlt: "Blue Vanda orchid flowers in a humid greenhouse setting.",
+      "https://upload.wikimedia.org/wikipedia/commons/f/f8/Biltmore_Greenhouse_-_Orchid.jpg",
+    imageAlt: "Orchid growing in a greenhouse-like humid environment.",
     summary:
       "Orchids appreciate humidity around their roots and leaves, but they still need gentle airflow to stay healthy.",
     likes: ["Moderate humidity", "Air movement", "Humidity trays or grouped plants"],
@@ -39,8 +39,9 @@ const careTopics: CareTopic[] = [
   },
   {
     title: "Potting Mix",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Phalaenopsis_roots.jpg",
-    imageAlt: "Phalaenopsis orchid roots showing thick aerial root growth.",
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/e/ee/Tiesto_transparente_phalaenopsis.JPG",
+    imageAlt: "Transparent Phalaenopsis pot showing orchid roots and potting medium.",
     summary:
       "Use an airy orchid mix such as bark, moss, charcoal, or mineral material so roots can breathe between waterings.",
     likes: ["Chunky bark or moss blends", "Air around roots", "A pot with drainage"],
@@ -49,8 +50,8 @@ const careTopics: CareTopic[] = [
   {
     title: "Feeding",
     imageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/7/7b/Dendrobium_nobile_-_Curtis%27_90_%28Ser._3_no._20%29_pl._5470_%281864%29.jpg",
-    imageAlt: "Illustration of Dendrobium nobile orchid growth and flowers.",
+      "https://upload.wikimedia.org/wikipedia/commons/e/e4/Fertilizers_for_Orchids_NPK_4-6-7.png",
+    imageAlt: "Orchid fertilizer packaging showing NPK feeding information.",
     summary:
       "Feed lightly during active growth, especially when new leaves and roots are forming, and reduce feeding during rest periods.",
     likes: ["Diluted orchid fertilizer", "Feeding after watering", "Less food in winter rest"],
@@ -59,8 +60,8 @@ const careTopics: CareTopic[] = [
   {
     title: "Repotting",
     imageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/2/20/Phalaenopsis_schilleriana_-_roots.jpg",
-    imageAlt: "Phalaenopsis orchid roots ready for repotting.",
+      "https://upload.wikimedia.org/wikipedia/commons/f/fd/Orchid_-_Phalaenopsis_%2849542028821%29.jpg",
+    imageAlt: "Phalaenopsis orchid roots and pot structure for repotting.",
     summary:
       "Repot when the bark breaks down, the pot no longer drains well, or healthy roots have clearly outgrown the container.",
     likes: ["Fresh airy medium", "Gentle root handling", "A pot only slightly larger"],
@@ -68,7 +69,7 @@ const careTopics: CareTopic[] = [
   },
   {
     title: "Propagation",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Keiki_of_Phalaenopsis.jpg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/8/87/Phalaenopsis_keiki.jpg",
     imageAlt: "Young Phalaenopsis keiki growing from an orchid stem.",
     summary:
       "Beginner-friendly propagation usually means waiting for a natural keiki or dividing mature orchids that are large enough.",
@@ -94,11 +95,15 @@ export function CareGuidePage() {
       </section>
 
       <section aria-label="Orchid care topics">
-        <ul className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          {careTopics.map((topic) => (
+        <ul className="flex flex-col gap-5">
+          {careTopics.map((topic, index) => (
             <li key={topic.title} className="overflow-hidden rounded-lg bg-mist shadow-sm">
-              <div className="grid h-full gap-0 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:grid-cols-1 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-                <div className="aspect-[4/3] overflow-hidden bg-peony/40 md:aspect-auto lg:aspect-[4/3] xl:aspect-auto">
+              <div className="grid min-h-[24rem] gap-0 lg:grid-cols-2">
+                <div
+                  className={`min-h-72 overflow-hidden bg-peony/40 lg:min-h-full ${
+                    index % 2 === 0 ? "order-1" : "order-2"
+                  }`}
+                >
                   <img
                     src={topic.imageUrl}
                     alt={topic.imageAlt}
@@ -106,13 +111,17 @@ export function CareGuidePage() {
                   />
                 </div>
 
-                <div className="flex flex-col gap-4 p-5">
+                <div
+                  className={`flex flex-col justify-center gap-5 p-5 sm:p-7 lg:p-8 ${
+                    index % 2 === 0 ? "order-2" : "order-1"
+                  }`}
+                >
                   <div>
-                    <h2 className="text-2xl font-bold text-ink">{topic.title}</h2>
-                    <p className="mt-2 text-sm leading-6 text-ink/80">{topic.summary}</p>
+                    <h2 className="text-3xl font-bold text-ink">{topic.title}</h2>
+                    <p className="mt-3 text-base leading-7 text-ink/80">{topic.summary}</p>
                   </div>
 
-                  <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="grid gap-5 sm:grid-cols-2">
                     <CareList title="They like" items={topic.likes} />
                     <CareList title="Avoid" items={topic.avoids} />
                   </div>

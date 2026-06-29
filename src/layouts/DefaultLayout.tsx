@@ -91,7 +91,7 @@ export function DefaultLayout() {
               Favorites
             </NavLink>
             <NavLink to="/rare-orchids" className={navLinkClass}>
-              Rare Orchids
+              Rare Collection
             </NavLink>
           </nav>
 
@@ -112,7 +112,7 @@ export function DefaultLayout() {
                 className={navLinkClass}
                 onClick={() => setIsMenuOpen(false)}
               >
-                Rare Orchids
+                Rare Collection
               </NavLink>
             </nav>
           ) : null}

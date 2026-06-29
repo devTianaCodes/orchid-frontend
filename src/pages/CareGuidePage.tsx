@@ -3,6 +3,8 @@ type CareTopic = {
   imageUrl: string;
   imageAlt: string;
   summary: string;
+  detail: string;
+  cue: string;
   likes: string[];
   avoids: string[];
 };
@@ -15,6 +17,9 @@ const careTopics: CareTopic[] = [
     imageAlt: "Potted Phalaenopsis orchid showing healthy roots and drainage needs.",
     summary:
       "Water when the potting mix is nearly dry and the roots look silvery, then let extra water drain away completely.",
+    detail:
+      "A good watering session should reach the whole root zone, not just the surface. Let water run through the pot, wait until dripping slows, and return the orchid to its decorative cover only when the base is no longer holding extra water.",
+    cue: "Beginner cue: green roots usually mean wait; silvery roots usually mean it is time to check the pot.",
     likes: ["Room-temperature water", "A clear wet-dry rhythm", "Free drainage after watering"],
     avoids: ["Standing water", "Constantly soggy bark", "Water trapped in the crown"],
   },
@@ -24,6 +29,9 @@ const careTopics: CareTopic[] = [
     imageAlt: "Purple Cattleya orchid flower in bright natural light.",
     summary:
       "Most indoor orchids grow best in bright indirect light, close to a window but protected from harsh midday sun.",
+    detail:
+      "Leaves tell the story. Healthy light often gives firm medium-green leaves and steady root growth. Very dark leaves can mean the plant wants more light, while yellow patches or dry sunken marks can mean the sun is too direct.",
+    cue: "Beginner cue: if your hand casts a soft shadow near the plant, the light is often close to ideal.",
     likes: ["Bright filtered light", "Morning or late-day sun", "Steady placement"],
     avoids: ["Hot direct sun", "Dark corners", "Frequent light changes"],
   },
@@ -34,6 +42,9 @@ const careTopics: CareTopic[] = [
     imageAlt: "Orchid growing in a greenhouse-like humid environment.",
     summary:
       "Orchids appreciate humidity around their roots and leaves, but they still need gentle airflow to stay healthy.",
+    detail:
+      "Humidity helps buds, leaves, and aerial roots stay active, especially in heated rooms. The goal is not a sealed wet environment; it is a fresh, lightly humid space where moisture can evaporate during the day.",
+    cue: "Beginner cue: dry crispy root tips can point to low humidity, while spots and stale smells point to too little airflow.",
     likes: ["Moderate humidity", "Air movement", "Humidity trays or grouped plants"],
     avoids: ["Closed stale air", "Wet leaves overnight", "Drafty temperature swings"],
   },
@@ -44,6 +55,9 @@ const careTopics: CareTopic[] = [
     imageAlt: "Transparent Phalaenopsis pot showing orchid roots and potting medium.",
     summary:
       "Use an airy orchid mix such as bark, moss, charcoal, or mineral material so roots can breathe between waterings.",
+    detail:
+      "Most common orchids are not grown like ordinary houseplants. Their roots need pockets of air, so the mix should hold some moisture while still staying open. Bark dries faster, moss holds more water, and many plants enjoy a balanced blend.",
+    cue: "Beginner cue: if the pot stays wet for many days and feels heavy, the mix may be too dense or broken down.",
     likes: ["Chunky bark or moss blends", "Air around roots", "A pot with drainage"],
     avoids: ["Dense garden soil", "Compacted old mix", "Oversized wet pots"],
   },
@@ -54,6 +68,9 @@ const careTopics: CareTopic[] = [
     imageAlt: "Orchid fertilizer packaging showing NPK feeding information.",
     summary:
       "Feed lightly during active growth, especially when new leaves and roots are forming, and reduce feeding during rest periods.",
+    detail:
+      "Orchids usually prefer weak, regular feeding rather than rare strong doses. Fertilizer supports new growth, but it cannot fix poor roots, bad light, or overwatering. Flush the pot with plain water sometimes so salts do not build up.",
+    cue: "Beginner cue: feed most when you see new roots or leaves; pause or reduce when the plant is resting.",
     likes: ["Diluted orchid fertilizer", "Feeding after watering", "Less food in winter rest"],
     avoids: ["Strong fertilizer doses", "Feeding dry roots", "Feeding stressed plants heavily"],
   },
@@ -64,6 +81,9 @@ const careTopics: CareTopic[] = [
     imageAlt: "Phalaenopsis orchid roots and pot structure for repotting.",
     summary:
       "Repot when the bark breaks down, the pot no longer drains well, or healthy roots have clearly outgrown the container.",
+    detail:
+      "Repotting is less about giving a huge pot and more about refreshing the root environment. Remove old collapsed mix, trim only dead hollow roots, and settle the plant firmly so new roots can anchor into fresh material.",
+    cue: "Beginner cue: sour smell, crumbling bark, or roots circling tightly around the pot are signs to repot.",
     likes: ["Fresh airy medium", "Gentle root handling", "A pot only slightly larger"],
     avoids: ["Repotting during bloom", "Cutting healthy roots", "Burying the crown"],
   },
@@ -73,6 +93,9 @@ const careTopics: CareTopic[] = [
     imageAlt: "Young Phalaenopsis keiki growing from an orchid stem.",
     summary:
       "Beginner-friendly propagation usually means waiting for a natural keiki or dividing mature orchids that are large enough.",
+    detail:
+      "Propagation works best when the parent plant is strong. A keiki should stay attached until it has several roots of its own, and divisions should keep enough healthy growth to recover. Rushing this step often weakens both plants.",
+    cue: "Beginner cue: wait for a baby plant to have multiple roots before separating it.",
     likes: ["Healthy parent plants", "Keikis with strong roots", "Division only when mature"],
     avoids: [
       "Forcing weak plants",
@@ -119,6 +142,10 @@ export function CareGuidePage() {
                   <div>
                     <h2 className="text-3xl font-bold text-ink">{topic.title}</h2>
                     <p className="mt-3 text-base leading-7 text-ink/80">{topic.summary}</p>
+                    <p className="mt-3 text-base leading-7 text-ink/80">{topic.detail}</p>
+                    <p className="mt-4 rounded-md bg-white/65 px-4 py-3 text-sm font-semibold leading-6 text-bark">
+                      {topic.cue}
+                    </p>
                   </div>
 
                   <div className="grid gap-5 sm:grid-cols-2">

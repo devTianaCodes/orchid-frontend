@@ -16,8 +16,10 @@ export function DefaultLayout() {
   const isOrchidDetailPage = location.pathname.startsWith("/orchids/");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `relative inline-flex items-center whitespace-nowrap text-[1.27rem] font-medium leading-none text-white transition hover:scale-105 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white after:absolute after:-bottom-2 after:left-0 after:h-[2px] after:bg-white ${
-      isActive ? "scale-105 after:w-full" : "after:w-0 after:transition-all hover:after:w-full"
+    `relative inline-flex items-center whitespace-nowrap text-[1.14rem] font-medium leading-none transition hover:scale-105 hover:text-peony-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-white after:absolute after:-bottom-2 after:left-0 after:h-[2px] after:bg-current ${
+      isActive
+        ? "scale-105 text-peony-soft after:w-full"
+        : "text-white after:w-0 after:transition-all hover:after:w-full"
     }`;
   const hasSoftHeroBackground =
     isOrchidsPage || isCareGuidePage || isFavoritesPage || isRareOrchidsPage || isOrchidDetailPage;
@@ -46,8 +48,8 @@ export function DefaultLayout() {
         <header
           className={
             isHomePage
-              ? "absolute left-0 right-0 top-0 z-10 mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 pt-6 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8"
-              : "flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between"
+              ? "absolute left-0 right-0 top-0 z-10 mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 pb-6 pt-6 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8"
+              : "flex flex-col gap-4 pb-6 lg:flex-row lg:items-end lg:justify-between"
           }
         >
           <div className="flex items-center justify-between gap-4">

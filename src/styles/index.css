@@ -11,13 +11,13 @@
   --color-petal: #d9a9cc;
   --color-bark: #4d3f42;
   --color-ink: #172419;
-  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-sans: Montserrat, ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
   color: #172419;
   background: #e8f4eb;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-family: Montserrat, ui-sans-serif, system-ui, sans-serif;
 }
 
 body {

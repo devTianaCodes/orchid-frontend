@@ -16,8 +16,8 @@ export function DefaultLayout() {
   const isOrchidDetailPage = location.pathname.startsWith("/orchids/");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `inline-flex h-12 w-36 items-center justify-center whitespace-nowrap rounded-md px-5 text-base font-bold text-rosy transition focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy ${
-      isActive ? "bg-peony-soft" : "bg-white hover:bg-peony-soft"
+    `inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-moss/45 px-3 py-2 text-sm font-bold text-ink transition focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy sm:px-4 sm:text-base ${
+      isActive ? "bg-peony-soft" : "bg-mist hover:bg-peony-soft"
     }`;
   const hasSoftHeroBackground =
     isOrchidsPage || isCareGuidePage || isFavoritesPage || isRareOrchidsPage || isOrchidDetailPage;

@@ -16,8 +16,8 @@ export function DefaultLayout() {
   const isOrchidDetailPage = location.pathname.startsWith("/orchids/");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-moss/45 px-3 py-2 text-sm font-bold text-ink transition focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy sm:px-4 sm:text-base ${
-      isActive ? "bg-peony-soft" : "bg-mist hover:bg-peony-soft"
+    `relative inline-flex items-center whitespace-nowrap text-[1.27rem] font-medium leading-none text-white transition hover:scale-105 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white after:absolute after:-bottom-2 after:left-0 after:h-[2px] after:bg-white ${
+      isActive ? "scale-105 after:w-full" : "after:w-0 after:transition-all hover:after:w-full"
     }`;
   const hasSoftHeroBackground =
     isOrchidsPage || isCareGuidePage || isFavoritesPage || isRareOrchidsPage || isOrchidDetailPage;
@@ -84,7 +84,7 @@ export function DefaultLayout() {
             </button>
           </div>
 
-          <nav className="hidden translate-y-1 flex-wrap gap-3 lg:flex">
+          <nav className="hidden translate-y-1 flex-wrap gap-6 lg:flex">
             <NavLink to="/orchids" className={navLinkClass}>
               Orchids
             </NavLink>
@@ -100,7 +100,7 @@ export function DefaultLayout() {
           </nav>
 
           {isMenuOpen ? (
-            <nav id="mobile-navigation" className="flex flex-col gap-3 lg:hidden">
+            <nav id="mobile-navigation" className="flex flex-col gap-6 lg:hidden">
               <NavLink to="/orchids" className={navLinkClass} onClick={() => setIsMenuOpen(false)}>
                 Orchids
               </NavLink>

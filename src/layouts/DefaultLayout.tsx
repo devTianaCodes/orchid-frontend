@@ -48,8 +48,8 @@ export function DefaultLayout() {
         <header
           className={
             isHomePage
-              ? "absolute left-0 right-0 top-0 z-10 mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 pb-6 pt-6 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8"
-              : "flex flex-col gap-4 pb-6 lg:flex-row lg:items-end lg:justify-between"
+              ? "absolute left-0 right-0 top-0 z-10 mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-6 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8"
+              : "flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between lg:pb-6"
           }
         >
           <div className="flex items-center justify-between gap-4">

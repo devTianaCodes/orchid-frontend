@@ -27,7 +27,7 @@ export function OrchidCard({ orchid, isFavorite, onToggleFavorite }: OrchidCardP
         onClick={(event) => onToggleFavorite(orchid, event)}
         className={`${favoriteIconClass} ${isFavorite ? "text-rosy" : "text-white"}`}
       >
-        ♥
+        <span aria-hidden="true">♥</span>
       </button>
       <Link
         to={toOrchidDetailPath(orchid.slug)}
@@ -41,7 +41,7 @@ export function OrchidCard({ orchid, isFavorite, onToggleFavorite }: OrchidCardP
               className="h-full w-full object-cover"
             />
           ) : (
-            <div className="h-full w-full" aria-label={orchid.commonName} />
+            <div className="h-full w-full" role="img" aria-label={orchid.commonName} />
           )}
         </div>
         <div className="flex min-h-64 flex-col gap-3 p-4">

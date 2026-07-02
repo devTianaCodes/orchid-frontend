@@ -74,11 +74,11 @@ function FavoriteOrchidCard({ orchid, onToggleFavorite }: FavoriteOrchidCardProp
       <button
         type="button"
         aria-label={`Remove ${orchid.commonName} from favorites`}
-        aria-pressed="true"
+        aria-pressed={true}
         onClick={(event) => onToggleFavorite(orchid, event)}
         className="absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center text-2xl leading-none text-rosy drop-shadow-[0_1px_2px_rgba(23,36,25,0.65)] transition hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
       >
-        ♥
+        <span aria-hidden="true">♥</span>
       </button>
       <Link
         to={toOrchidDetailPath(orchid.slug)}
@@ -92,7 +92,7 @@ function FavoriteOrchidCard({ orchid, onToggleFavorite }: FavoriteOrchidCardProp
               className="h-full w-full object-cover"
             />
           ) : (
-            <div className="h-full w-full" aria-label={orchid.commonName} />
+            <div className="h-full w-full" role="img" aria-label={orchid.commonName} />
           )}
         </div>
         <div className="flex min-h-56 flex-col gap-3 p-4">

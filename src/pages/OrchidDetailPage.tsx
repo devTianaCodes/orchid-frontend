@@ -110,7 +110,7 @@ export function OrchidDetailPage() {
                 className="h-full w-full object-cover"
               />
             ) : (
-              <div className="h-full w-full" aria-label={orchid.commonName} />
+              <div className="h-full w-full" role="img" aria-label={orchid.commonName} />
             )}
           </div>
         </div>
@@ -134,7 +134,7 @@ export function OrchidDetailPage() {
                   isFavorite ? "text-rosy" : "text-white"
                 }`}
               >
-                ♥
+                <span aria-hidden="true">♥</span>
               </button>
             </div>
             <h2 className="mt-2 text-3xl font-bold leading-tight sm:text-4xl">

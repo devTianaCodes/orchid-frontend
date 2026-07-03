@@ -110,8 +110,7 @@ export function CareGuidePage() {
     <>
       <section className="rounded-lg bg-mist p-5 shadow-sm sm:p-6">
         <p className="text-sm font-medium uppercase tracking-wide text-bark">Care Guide</p>
-        <h1 className="mt-2 text-3xl font-bold text-ink sm:text-4xl">Orchid Care Guide</h1>
-        <p className="mt-3 max-w-3xl text-base leading-7 text-ink/80">
+        <p className="mt-3 text-base leading-7 text-ink/80">
           Learn the essential habits for watering, light, humidity, potting, feeding, repotting, and
           propagation.
         </p>

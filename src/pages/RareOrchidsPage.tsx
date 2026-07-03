@@ -90,7 +90,9 @@ export function RareOrchidsPage() {
     <>
       <section className="rounded-lg bg-mist p-5 shadow-sm">
         <p className="text-sm font-medium uppercase tracking-wide text-bark">Rare Collection</p>
-        <h1 className="mt-2 text-3xl font-bold text-ink">Rare Orchids</h1>
+        <p className="mt-3 text-base leading-7 text-ink/80">
+          Explore rare orchid profiles with conservation-minded care information.
+        </p>
       </section>
 
       <FavoriteFeedback feedback={favoriteModal} onClose={() => setFavoriteModal(null)} />

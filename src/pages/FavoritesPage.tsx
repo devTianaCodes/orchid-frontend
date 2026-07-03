@@ -51,7 +51,9 @@ export function FavoritesPage() {
 
       <div className="rounded-lg bg-mist p-5 shadow-sm">
         <p className="text-sm font-medium uppercase tracking-wide text-bark">Favorites</p>
-        <h1 className="mt-2 text-3xl font-bold">Saved orchids</h1>
+        <p className="mt-3 text-base leading-7 text-ink/80">
+          Keep your saved orchid profiles in one place for quick care reference.
+        </p>
       </div>
 
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

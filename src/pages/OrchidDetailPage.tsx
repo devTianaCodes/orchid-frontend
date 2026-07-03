@@ -119,13 +119,10 @@ export function OrchidDetailPage() {
         <div className="flex flex-col gap-5">
           <header className="pr-12">
             <p className="text-sm font-medium uppercase tracking-wide text-bark">{orchid.genus}</p>
-            <h2 className="mt-2 text-3xl font-bold leading-tight sm:text-4xl">
+            <h2 className="mt-9 text-3xl font-bold leading-tight sm:text-4xl lg:mt-10">
               {orchid.commonName}
             </h2>
             <p className="mt-2 text-lg italic text-bark">{orchid.scientificName}</p>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-ink/80">
-              {orchid.shortDescription}
-            </p>
           </header>
 
           <div className="aspect-[4/3] overflow-hidden rounded-md bg-peony/40 lg:max-h-[28rem]">
@@ -139,9 +136,9 @@ export function OrchidDetailPage() {
               <div className="h-full w-full" role="img" aria-label={orchid.commonName} />
             )}
           </div>
-        </div>
 
-        <div className="flex flex-col justify-start gap-6 pr-12">
+          <p className="max-w-2xl text-base leading-7 text-ink/80">{orchid.shortDescription}</p>
+
           <section className="grid grid-cols-2 gap-3 text-sm">
             <DetailMetric label="Difficulty" value={formatLabel(orchid.difficulty)} />
             <DetailMetric label="Light" value={formatLabel(orchid.lightNeeds)} />
@@ -156,16 +153,14 @@ export function OrchidDetailPage() {
               value={`${orchid.temperatureMinCelsius}°C - ${orchid.temperatureMaxCelsius}°C`}
             />
           </section>
+        </div>
 
-          <section className="grid gap-6">
-            <CareSection eyebrow="Origin" title="Native Region" body={orchid.nativeRegion} />
-            <CareSection eyebrow="Roots" title="Potting Medium" body={orchid.pottingMedium} />
-            <CareSection
-              eyebrow="Bloom"
-              title={formatLabel(orchid.bloomSeason)}
-              body={orchid.bloomNotes}
-            />
-            <CareSection eyebrow="Care" title="Care Summary" body={orchid.careSummary} />
+        <div className="flex flex-col justify-start pt-14 lg:pt-16">
+          <section className="grid h-full gap-6 rounded-md bg-white/70 p-5 shadow-sm sm:p-6">
+            <CareSection eyebrow="Origin" body={orchid.nativeRegion} />
+            <CareSection eyebrow="Roots" body={orchid.pottingMedium} />
+            <CareSection eyebrow="Bloom" body={orchid.bloomNotes} />
+            <CareSection eyebrow="Care" body={orchid.careSummary} />
           </section>
         </div>
       </div>
@@ -200,17 +195,13 @@ function DetailMetric({ label, value }: DetailMetricProps) {
 
 type CareSectionProps = {
   eyebrow: string;
-  title: string;
   body: string;
 };
 
-function CareSection({ eyebrow, title, body }: CareSectionProps) {
+function CareSection({ eyebrow, body }: CareSectionProps) {
   return (
     <section>
-      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <p className="text-xs font-semibold uppercase tracking-wide text-bark">{eyebrow}</p>
-        <h3 className="text-lg font-semibold leading-6 text-ink">{title}</h3>
-      </div>
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-bark">{eyebrow}</h3>
       <p className="mt-3 text-sm leading-6 text-ink/80">{body}</p>
     </section>
   );

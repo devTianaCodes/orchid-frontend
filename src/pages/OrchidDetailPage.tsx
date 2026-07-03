@@ -97,12 +97,38 @@ export function OrchidDetailPage() {
   const isFavorite = favoriteOrchids.some((favorite) => favorite.slug === orchid.slug);
 
   return (
-    <article className="overflow-hidden rounded-lg bg-mist shadow-sm">
+    <article className="relative overflow-hidden rounded-lg bg-mist shadow-sm">
       <FavoriteFeedback feedback={favoriteModal} onClose={() => setFavoriteModal(null)} />
+      <button
+        type="button"
+        aria-label={
+          isFavorite
+            ? `Remove ${orchid.commonName} from favorites`
+            : `Add ${orchid.commonName} to favorites`
+        }
+        aria-pressed={isFavorite}
+        onClick={toggleFavorite}
+        className={`absolute right-5 top-5 z-10 inline-flex h-10 w-10 shrink-0 items-center justify-center text-2xl leading-none drop-shadow-[0_1px_2px_rgba(23,36,25,0.65)] transition hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white ${
+          isFavorite ? "text-rosy" : "text-white"
+        }`}
+      >
+        <span aria-hidden="true">♥</span>
+      </button>
 
-      <div className="grid gap-0 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-stretch">
-        <div className="bg-mist p-6 sm:p-7 lg:max-h-[34rem] lg:p-8">
-          <div className="aspect-[4/3] overflow-hidden rounded-md bg-peony/40 lg:h-full lg:aspect-auto">
+      <div className="grid gap-8 p-5 sm:p-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:p-8">
+        <div className="flex flex-col gap-5">
+          <header className="pr-12">
+            <p className="text-sm font-medium uppercase tracking-wide text-bark">{orchid.genus}</p>
+            <h2 className="mt-2 text-3xl font-bold leading-tight sm:text-4xl">
+              {orchid.commonName}
+            </h2>
+            <p className="mt-2 text-lg italic text-bark">{orchid.scientificName}</p>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-ink/80">
+              {orchid.shortDescription}
+            </p>
+          </header>
+
+          <div className="aspect-[4/3] overflow-hidden rounded-md bg-peony/40 lg:max-h-[28rem]">
             {orchid.imageUrl ? (
               <img
                 src={orchid.imageUrl}
@@ -115,36 +141,8 @@ export function OrchidDetailPage() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-6 p-5 sm:p-6 lg:p-8">
-          <header>
-            <div className="flex items-start justify-between gap-4">
-              <p className="text-sm font-medium uppercase tracking-wide text-bark">
-                {orchid.genus}
-              </p>
-              <button
-                type="button"
-                aria-label={
-                  isFavorite
-                    ? `Remove ${orchid.commonName} from favorites`
-                    : `Add ${orchid.commonName} to favorites`
-                }
-                aria-pressed={isFavorite}
-                onClick={toggleFavorite}
-                className={`inline-flex h-10 w-10 shrink-0 items-center justify-center text-2xl leading-none drop-shadow-[0_1px_2px_rgba(23,36,25,0.65)] transition hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white ${
-                  isFavorite ? "text-rosy" : "text-white"
-                }`}
-              >
-                <span aria-hidden="true">♥</span>
-              </button>
-            </div>
-            <h2 className="mt-2 text-3xl font-bold leading-tight sm:text-4xl">
-              {orchid.commonName}
-            </h2>
-            <p className="mt-2 text-lg italic text-bark">{orchid.scientificName}</p>
-            <p className="mt-4 text-base leading-7 text-ink/80">{orchid.shortDescription}</p>
-          </header>
-
-          <section className="grid gap-3 text-sm sm:grid-cols-2">
+        <div className="flex flex-col justify-start gap-6 pr-12">
+          <section className="grid grid-cols-2 gap-3 text-sm">
             <DetailMetric label="Difficulty" value={formatLabel(orchid.difficulty)} />
             <DetailMetric label="Light" value={formatLabel(orchid.lightNeeds)} />
             <DetailMetric label="Watering" value={formatLabel(orchid.wateringNeeds)} />
@@ -158,19 +156,22 @@ export function OrchidDetailPage() {
               value={`${orchid.temperatureMinCelsius}°C - ${orchid.temperatureMaxCelsius}°C`}
             />
           </section>
+
+          <section className="grid gap-6">
+            <CareSection eyebrow="Origin" title="Native Region" body={orchid.nativeRegion} />
+            <CareSection eyebrow="Roots" title="Potting Medium" body={orchid.pottingMedium} />
+            <CareSection
+              eyebrow="Bloom"
+              title={formatLabel(orchid.bloomSeason)}
+              body={orchid.bloomNotes}
+            />
+            <CareSection eyebrow="Care" title="Care Summary" body={orchid.careSummary} />
+          </section>
         </div>
       </div>
 
-      <div className="grid gap-6 p-5 sm:p-6 lg:grid-cols-3 lg:p-8">
-        <CareSection title="Native Region" body={orchid.nativeRegion} />
-        <CareSection title="Potting Medium" body={orchid.pottingMedium} />
-        <CareSection title={`Bloom: ${formatLabel(orchid.bloomSeason)}`} body={orchid.bloomNotes} />
-        <section className="lg:col-span-3">
-          <h3 className="text-lg font-semibold">Care Summary</h3>
-          <p className="mt-2 max-w-4xl text-base leading-7 text-ink/80">{orchid.careSummary}</p>
-        </section>
-
-        <div className="flex justify-center py-4 lg:col-span-3">
+      <div className="p-5 sm:p-6 lg:p-8">
+        <div className="flex justify-center pb-4 pt-8">
           <Link
             to="/orchids"
             className="inline-flex h-10 items-center justify-center rounded-md border border-moss/45 px-4 text-sm font-semibold text-rosy transition hover:border-rosy focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy"
@@ -198,15 +199,19 @@ function DetailMetric({ label, value }: DetailMetricProps) {
 }
 
 type CareSectionProps = {
+  eyebrow: string;
   title: string;
   body: string;
 };
 
-function CareSection({ title, body }: CareSectionProps) {
+function CareSection({ eyebrow, title, body }: CareSectionProps) {
   return (
     <section>
-      <h3 className="text-lg font-semibold">{title}</h3>
-      <p className="mt-2 text-base leading-7 text-ink/80">{body}</p>
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <p className="text-xs font-semibold uppercase tracking-wide text-bark">{eyebrow}</p>
+        <h3 className="text-lg font-semibold leading-6 text-ink">{title}</h3>
+      </div>
+      <p className="mt-3 text-sm leading-6 text-ink/80">{body}</p>
     </section>
   );
 }

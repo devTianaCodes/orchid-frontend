@@ -90,14 +90,14 @@ export function DefaultLayout() {
             <NavLink to="/orchids" className={navLinkClass}>
               Orchids
             </NavLink>
-            <NavLink to="/care-guide" className={navLinkClass}>
-              Care Guide
-            </NavLink>
             <NavLink to="/favorites" className={navLinkClass}>
               Favorites
             </NavLink>
             <NavLink to="/rare-orchids" className={navLinkClass}>
               Rare Collection
+            </NavLink>
+            <NavLink to="/care-guide" className={navLinkClass}>
+              Care Guide
             </NavLink>
           </nav>
 
@@ -105,13 +105,6 @@ export function DefaultLayout() {
             <nav id="mobile-navigation" className="flex flex-col gap-6 lg:hidden">
               <NavLink to="/orchids" className={navLinkClass} onClick={() => setIsMenuOpen(false)}>
                 Orchids
-              </NavLink>
-              <NavLink
-                to="/care-guide"
-                className={navLinkClass}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Care Guide
               </NavLink>
               <NavLink
                 to="/favorites"
@@ -126,6 +119,13 @@ export function DefaultLayout() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Rare Collection
+              </NavLink>
+              <NavLink
+                to="/care-guide"
+                className={navLinkClass}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Care Guide
               </NavLink>
             </nav>
           ) : null}

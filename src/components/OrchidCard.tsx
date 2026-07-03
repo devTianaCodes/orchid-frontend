@@ -15,7 +15,7 @@ const favoriteIconClass =
 
 export function OrchidCard({ orchid, isFavorite, onToggleFavorite }: OrchidCardProps) {
   return (
-    <li className="relative overflow-hidden rounded-lg bg-mist shadow-sm">
+    <li className="relative overflow-hidden rounded-lg bg-mist shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg">
       <button
         type="button"
         aria-label={
@@ -33,25 +33,25 @@ export function OrchidCard({ orchid, isFavorite, onToggleFavorite }: OrchidCardP
         to={toOrchidDetailPath(orchid.slug)}
         className="group block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy"
       >
-        <div className="aspect-[4/3] w-full overflow-hidden bg-peony/40">
+        <div className="aspect-[5/4] w-full overflow-hidden bg-peony/40">
           {orchid.imageUrl ? (
             <img
               src={orchid.imageUrl}
               alt={orchid.imageAlt ?? orchid.commonName}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
             />
           ) : (
             <div className="h-full w-full" role="img" aria-label={orchid.commonName} />
           )}
         </div>
-        <div className="flex min-h-64 flex-col gap-3 p-4">
+        <div className="flex min-h-60 flex-col gap-4 p-4">
           <div>
-            <h2 className="text-xl font-semibold leading-7">{orchid.commonName}</h2>
-            <p className="text-sm italic leading-6 text-bark">{orchid.scientificName}</p>
+            <h2 className="text-lg font-semibold leading-6 text-ink">{orchid.commonName}</h2>
+            <p className="mt-1 text-sm italic leading-5 text-bark">{orchid.scientificName}</p>
           </div>
-          <p className="text-sm leading-6 text-ink/80">{orchid.shortDescription}</p>
-          <div className="mt-auto flex -translate-y-[15px] justify-center pt-2">
-            <span className="inline-flex h-10 items-center justify-center rounded-md border border-moss/45 px-4 text-sm font-semibold text-rosy transition group-hover:border-rosy">
+          <p className="line-clamp-3 text-sm leading-6 text-ink/75">{orchid.shortDescription}</p>
+          <div className="mt-auto flex justify-center pt-1">
+            <span className="inline-flex h-10 items-center justify-center rounded-md border border-moss/45 px-5 text-sm font-semibold text-rosy transition group-hover:border-rosy">
               Explore
             </span>
           </div>

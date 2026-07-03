@@ -161,8 +161,8 @@ export function OrchidBrowsePage() {
       </section>
 
       {filterMetadata ? (
-        <section className="rounded-lg bg-mist p-4 shadow-sm">
-          <div className="grid gap-4 md:grid-cols-[minmax(0,1.5fr)_repeat(2,minmax(0,1fr))]">
+        <section className="rounded-lg bg-mist p-5 shadow-sm">
+          <div className="flex flex-col gap-5">
             <label className="flex flex-col gap-2 text-sm font-medium text-bark">
               Search
               <input
@@ -170,57 +170,63 @@ export function OrchidBrowsePage() {
                 value={filters.q}
                 onChange={(event) => updateFilter("q", event.target.value)}
                 placeholder="Name, genus, care keyword"
-                className="h-11 rounded-md border border-moss/45 bg-white px-3 text-base font-normal text-ink outline-none transition focus:border-rosy"
+                className="h-12 rounded-md bg-white px-4 text-base font-normal text-ink shadow-sm outline-none transition focus:ring-2 focus:ring-rosy"
               />
             </label>
 
-            <SelectFilter
-              label="Difficulty"
-              value={filters.difficulty}
-              options={filterMetadata.difficulties}
-              onChange={(value) => updateFilter("difficulty", value as BrowseFilters["difficulty"])}
-            />
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              <SelectFilter
+                label="Difficulty"
+                value={filters.difficulty}
+                options={filterMetadata.difficulties}
+                onChange={(value) =>
+                  updateFilter("difficulty", value as BrowseFilters["difficulty"])
+                }
+              />
 
-            <SelectFilter
-              label="Light"
-              value={filters.light}
-              options={filterMetadata.lightNeeds}
-              onChange={(value) => updateFilter("light", value as BrowseFilters["light"])}
-            />
+              <SelectFilter
+                label="Light"
+                value={filters.light}
+                options={filterMetadata.lightNeeds}
+                onChange={(value) => updateFilter("light", value as BrowseFilters["light"])}
+              />
 
-            <SelectFilter
-              label="Water"
-              value={filters.water}
-              options={filterMetadata.wateringNeeds}
-              onChange={(value) => updateFilter("water", value as BrowseFilters["water"])}
-            />
+              <SelectFilter
+                label="Water"
+                value={filters.water}
+                options={filterMetadata.wateringNeeds}
+                onChange={(value) => updateFilter("water", value as BrowseFilters["water"])}
+              />
 
-            <SelectFilter
-              label="Growth"
-              value={filters.growthType}
-              options={filterMetadata.growthTypes}
-              onChange={(value) => updateFilter("growthType", value as BrowseFilters["growthType"])}
-            />
+              <SelectFilter
+                label="Growth"
+                value={filters.growthType}
+                options={filterMetadata.growthTypes}
+                onChange={(value) =>
+                  updateFilter("growthType", value as BrowseFilters["growthType"])
+                }
+              />
 
-            <SelectFilter
-              label="Bloom"
-              value={filters.bloomSeason}
-              options={filterMetadata.bloomSeasons}
-              onChange={(value) =>
-                updateFilter("bloomSeason", value as BrowseFilters["bloomSeason"])
-              }
-            />
-          </div>
+              <SelectFilter
+                label="Bloom"
+                value={filters.bloomSeason}
+                options={filterMetadata.bloomSeasons}
+                onChange={(value) =>
+                  updateFilter("bloomSeason", value as BrowseFilters["bloomSeason"])
+                }
+              />
+            </div>
 
-          <div className="mt-4 flex justify-end pt-4">
-            <button
-              type="button"
-              onClick={clearFilters}
-              disabled={!hasActiveFilters}
-              className="h-10 rounded-md border border-moss/45 px-4 text-sm font-semibold text-rosy transition hover:border-rosy focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy disabled:cursor-not-allowed disabled:opacity-45"
-            >
-              Clear
-            </button>
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={clearFilters}
+                disabled={!hasActiveFilters}
+                className="h-10 rounded-md border border-moss/45 px-4 text-sm font-semibold text-rosy transition hover:border-rosy focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy disabled:cursor-not-allowed disabled:opacity-45"
+              >
+                Clear filters
+              </button>
+            </div>
           </div>
         </section>
       ) : null}
@@ -281,7 +287,7 @@ function SelectFilter({ label, value, options, onChange }: SelectFilterProps) {
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-11 rounded-md border border-moss/45 bg-white px-3 text-base font-normal text-ink outline-none transition focus:border-rosy"
+        className="h-11 rounded-md bg-white px-3 text-base font-normal text-ink shadow-sm outline-none transition focus:ring-2 focus:ring-rosy"
       >
         <option value="">All</option>
         {options.map((option) => (

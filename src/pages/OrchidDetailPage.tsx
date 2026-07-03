@@ -1,23 +1,17 @@
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { getOrchidBySlug, type OrchidDetail } from "../api/orchidApi";
 import { ErrorState } from "../components/ErrorState";
 import { FavoriteFeedback } from "../components/FavoriteFeedback";
 import { LoadingState } from "../components/LoadingState";
-import {
-  readFavoriteOrchids,
-  saveFavoriteOrchids,
-  toggleFavoriteOrchid,
-} from "../utils/favoriteOrchids";
-import { createFavoriteModal, type FavoriteModalState } from "../utils/favoriteModal";
+import { useFavoriteOrchids } from "../hooks/useFavoriteOrchids";
 import { toApiOrchidSlug } from "../utils/orchidRoutes";
 
 export function OrchidDetailPage() {
   const { slug } = useParams();
   const [orchid, setOrchid] = useState<OrchidDetail | null>(null);
-  const [favoriteOrchids, setFavoriteOrchids] = useState(readFavoriteOrchids);
-  const [favoriteModal, setFavoriteModal] = useState<FavoriteModalState | null>(null);
+  const { closeFavoriteModal, favoriteModal, favoriteSlugs, toggleFavorite } = useFavoriteOrchids();
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const slugError = slug ? null : "Missing orchid slug.";
@@ -56,27 +50,6 @@ export function OrchidDetailPage() {
     };
   }, [slug]);
 
-  function toggleFavorite(event: MouseEvent<HTMLButtonElement>) {
-    if (!orchid) {
-      return;
-    }
-
-    setFavoriteOrchids((currentFavorites) => {
-      const isAlreadyFavorite = currentFavorites.some((favorite) => favorite.slug === orchid.slug);
-      const nextFavorites = toggleFavoriteOrchid(orchid, currentFavorites);
-
-      saveFavoriteOrchids(nextFavorites);
-      setFavoriteModal(
-        createFavoriteModal(
-          isAlreadyFavorite ? "Removed from favourite" : "Added to favourite",
-          event,
-        ),
-      );
-
-      return nextFavorites;
-    });
-  }
-
   if (slugError) {
     return <ErrorState title="Could not load orchid" message={slugError} />;
   }
@@ -94,11 +67,11 @@ export function OrchidDetailPage() {
     );
   }
 
-  const isFavorite = favoriteOrchids.some((favorite) => favorite.slug === orchid.slug);
+  const isFavorite = favoriteSlugs.has(orchid.slug);
 
   return (
     <article className="relative overflow-hidden rounded-lg bg-mist shadow-sm">
-      <FavoriteFeedback feedback={favoriteModal} onClose={() => setFavoriteModal(null)} />
+      <FavoriteFeedback feedback={favoriteModal} onClose={closeFavoriteModal} />
       <button
         type="button"
         aria-label={
@@ -107,7 +80,7 @@ export function OrchidDetailPage() {
             : `Add ${orchid.commonName} to favorites`
         }
         aria-pressed={isFavorite}
-        onClick={toggleFavorite}
+        onClick={(event) => toggleFavorite(orchid, event)}
         className={`absolute right-5 top-5 z-10 inline-flex h-10 w-10 shrink-0 items-center justify-center text-2xl leading-none drop-shadow-[0_1px_2px_rgba(23,36,25,0.65)] transition hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white ${
           isFavorite ? "text-rosy" : "text-white"
         }`}

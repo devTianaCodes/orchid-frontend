@@ -1,30 +1,13 @@
-import { useState, type MouseEvent } from "react";
 import { Link } from "react-router-dom";
 
-import type { OrchidListItem } from "../api/orchidApi";
 import { EmptyState } from "../components/EmptyState";
 import { FavoriteFeedback } from "../components/FavoriteFeedback";
 import { OrchidCard } from "../components/OrchidCard";
-import {
-  readFavoriteOrchids,
-  saveFavoriteOrchids,
-  toggleFavoriteOrchid,
-} from "../utils/favoriteOrchids";
-import { createFavoriteModal, type FavoriteModalState } from "../utils/favoriteModal";
+import { useFavoriteOrchids } from "../hooks/useFavoriteOrchids";
 
 export function FavoritesPage() {
-  const [favoriteOrchids, setFavoriteOrchids] = useState<OrchidListItem[]>(readFavoriteOrchids);
-  const [favoriteModal, setFavoriteModal] = useState<FavoriteModalState | null>(null);
-
-  function toggleFavorite(orchid: OrchidListItem, event: MouseEvent<HTMLButtonElement>) {
-    setFavoriteOrchids((currentFavorites) => {
-      const nextFavorites = toggleFavoriteOrchid(orchid, currentFavorites);
-
-      saveFavoriteOrchids(nextFavorites);
-      setFavoriteModal(createFavoriteModal("Removed from favourite", event));
-      return nextFavorites;
-    });
-  }
+  const { closeFavoriteModal, favoriteModal, favoriteOrchids, toggleFavorite } =
+    useFavoriteOrchids();
 
   if (favoriteOrchids.length === 0) {
     return (
@@ -47,7 +30,7 @@ export function FavoritesPage() {
 
   return (
     <section className="flex flex-col gap-5">
-      <FavoriteFeedback feedback={favoriteModal} onClose={() => setFavoriteModal(null)} />
+      <FavoriteFeedback feedback={favoriteModal} onClose={closeFavoriteModal} />
 
       <div className="rounded-lg bg-mist p-5 shadow-sm">
         <p className="text-sm font-medium uppercase tracking-wide text-bark">Favorites</p>

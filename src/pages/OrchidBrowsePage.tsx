@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   getOrchidFilters,
@@ -19,12 +19,7 @@ import { FavoriteFeedback } from "../components/FavoriteFeedback";
 import { LoadingState } from "../components/LoadingState";
 import { OrchidCard } from "../components/OrchidCard";
 import { PaginationControls } from "../components/PaginationControls";
-import {
-  readFavoriteOrchids,
-  saveFavoriteOrchids,
-  toggleFavoriteOrchid,
-} from "../utils/favoriteOrchids";
-import { createFavoriteModal, type FavoriteModalState } from "../utils/favoriteModal";
+import { useFavoriteOrchids } from "../hooks/useFavoriteOrchids";
 
 type BrowseFilters = {
   q: string;
@@ -53,8 +48,7 @@ export function OrchidBrowsePage() {
     OrchidFilterMetadataResponse["filters"] | null
   >(null);
   const [filters, setFilters] = useState<BrowseFilters>(defaultBrowseFilters);
-  const [favoriteOrchids, setFavoriteOrchids] = useState<OrchidListItem[]>(readFavoriteOrchids);
-  const [favoriteModal, setFavoriteModal] = useState<FavoriteModalState | null>(null);
+  const { closeFavoriteModal, favoriteModal, favoriteSlugs, toggleFavorite } = useFavoriteOrchids();
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -136,8 +130,6 @@ export function OrchidBrowsePage() {
   }, [filters, isLoading, page]);
 
   const hasActiveFilters = Object.values(filters).some(Boolean);
-  const favoriteSlugs = new Set(favoriteOrchids.map((orchid) => orchid.slug));
-
   function updateFilter<TName extends keyof BrowseFilters>(
     name: TName,
     value: BrowseFilters[TName],
@@ -157,23 +149,6 @@ export function OrchidBrowsePage() {
   function changePage(nextPage: number) {
     setPage(nextPage);
     resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  function toggleFavorite(orchid: OrchidListItem, event: MouseEvent<HTMLButtonElement>) {
-    setFavoriteOrchids((currentFavorites) => {
-      const isAlreadyFavorite = currentFavorites.some((favorite) => favorite.slug === orchid.slug);
-      const nextFavorites = toggleFavoriteOrchid(orchid, currentFavorites);
-
-      saveFavoriteOrchids(nextFavorites);
-      setFavoriteModal(
-        createFavoriteModal(
-          isAlreadyFavorite ? "Removed from favourite" : "Added to favourite",
-          event,
-        ),
-      );
-
-      return nextFavorites;
-    });
   }
 
   return (
@@ -243,7 +218,7 @@ export function OrchidBrowsePage() {
         </section>
       ) : null}
 
-      <FavoriteFeedback feedback={favoriteModal} onClose={() => setFavoriteModal(null)} />
+      <FavoriteFeedback feedback={favoriteModal} onClose={closeFavoriteModal} />
 
       {isLoading ? <LoadingState label="Loading orchids" /> : null}
 

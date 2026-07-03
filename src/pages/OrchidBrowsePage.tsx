@@ -153,6 +153,13 @@ export function OrchidBrowsePage() {
 
   return (
     <>
+      <section className="rounded-lg bg-mist p-5 shadow-sm">
+        <p className="text-sm font-medium uppercase tracking-wide text-bark">Orchid Encyclopedia</p>
+        <p className="mt-3 text-base leading-7 text-ink/80">
+          Browse orchid varieties and learn their care needs.
+        </p>
+      </section>
+
       {filterMetadata ? (
         <section className="rounded-lg bg-mist p-4 shadow-sm">
           <div className="grid gap-4 md:grid-cols-[minmax(0,1.5fr)_repeat(2,minmax(0,1fr))]">

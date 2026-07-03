@@ -65,8 +65,9 @@ export function RareOrchidsPage() {
     <>
       <section className="rounded-lg bg-mist p-5 shadow-sm">
         <p className="text-sm font-medium uppercase tracking-wide text-bark">Rare Collection</p>
-        <p className="mt-3 text-base leading-7 text-ink/80">
-          Explore rare orchid profiles with conservation-minded care information.
+        <p className="mt-3 max-w-4xl text-base leading-7 text-ink/80">
+          Explore rare orchid profiles with conservation-minded care information. These orchids are
+          presented for learning, appreciation, and habitat awareness.
         </p>
       </section>
 

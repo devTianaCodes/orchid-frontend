@@ -3,6 +3,25 @@ import { Link } from "react-router-dom";
 const heroImageUrl =
   "https://images.unsplash.com/photo-1571677179476-ab32559a6c7c?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=80&w=3000";
 
+const learningHighlights = [
+  {
+    title: "Beginner friendly",
+    text: "Clear care cues for light, water, roots, and seasonal rhythm.",
+  },
+  {
+    title: "Care-focused profiles",
+    text: "Each orchid includes practical growing notes and detail pages.",
+  },
+  {
+    title: "Real orchid photos",
+    text: "Profiles use real images with documented sources.",
+  },
+  {
+    title: "Local favorites",
+    text: "Save orchids in your browser for quick return visits.",
+  },
+];
+
 export function HomePage() {
   return (
     <section
@@ -13,7 +32,7 @@ export function HomePage() {
         backgroundSize: "cover",
       }}
     >
-      <div className="mx-auto flex min-h-screen w-full max-w-7xl items-center justify-center px-4 py-32 sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col justify-center gap-12 px-4 pb-10 pt-32 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-wide text-petal">
             OrchidCare encyclopedia
@@ -32,6 +51,17 @@ export function HomePage() {
             </Link>
           </div>
         </div>
+
+        <ul className="grid gap-3 text-left sm:grid-cols-2 lg:grid-cols-4">
+          {learningHighlights.map((highlight) => (
+            <li key={highlight.title} className="rounded-md bg-white/12 p-4 backdrop-blur-sm">
+              <h3 className="text-sm font-bold uppercase tracking-wide text-petal">
+                {highlight.title}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-white/82">{highlight.text}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

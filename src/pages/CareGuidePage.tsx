@@ -1,4 +1,5 @@
 type CareTopic = {
+  eyebrow: string;
   title: string;
   imageUrl: string;
   imageAlt: string;
@@ -11,6 +12,7 @@ type CareTopic = {
 
 const careTopics: CareTopic[] = [
   {
+    eyebrow: "Beginner Care",
     title: "Watering",
     imageUrl:
       "https://upload.wikimedia.org/wikipedia/commons/0/04/Orchid_-_Phalaenopsis_%2849591245677%29.jpg",
@@ -24,6 +26,7 @@ const careTopics: CareTopic[] = [
     avoids: ["Standing water", "Constantly soggy bark", "Water trapped in the crown"],
   },
   {
+    eyebrow: "Light",
     title: "Light",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Cattleya_labiata_Orchi_1013.jpg",
     imageAlt: "Purple Cattleya orchid flower in bright natural light.",
@@ -36,6 +39,7 @@ const careTopics: CareTopic[] = [
     avoids: ["Hot direct sun", "Dark corners", "Frequent light changes"],
   },
   {
+    eyebrow: "Growing Climate",
     title: "Humidity",
     imageUrl:
       "https://upload.wikimedia.org/wikipedia/commons/f/f8/Biltmore_Greenhouse_-_Orchid.jpg",
@@ -49,6 +53,7 @@ const careTopics: CareTopic[] = [
     avoids: ["Closed stale air", "Wet leaves overnight", "Drafty temperature swings"],
   },
   {
+    eyebrow: "Root Health",
     title: "Potting Mix",
     imageUrl:
       "https://upload.wikimedia.org/wikipedia/commons/e/ee/Tiesto_transparente_phalaenopsis.JPG",
@@ -62,6 +67,7 @@ const careTopics: CareTopic[] = [
     avoids: ["Dense garden soil", "Compacted old mix", "Oversized wet pots"],
   },
   {
+    eyebrow: "Nutrition",
     title: "Feeding",
     imageUrl:
       "https://upload.wikimedia.org/wikipedia/commons/e/e4/Fertilizers_for_Orchids_NPK_4-6-7.png",
@@ -75,6 +81,7 @@ const careTopics: CareTopic[] = [
     avoids: ["Strong fertilizer doses", "Feeding dry roots", "Feeding stressed plants heavily"],
   },
   {
+    eyebrow: "Maintenance",
     title: "Repotting",
     imageUrl:
       "https://upload.wikimedia.org/wikipedia/commons/f/fd/Orchid_-_Phalaenopsis_%2849542028821%29.jpg",
@@ -88,6 +95,7 @@ const careTopics: CareTopic[] = [
     avoids: ["Repotting during bloom", "Cutting healthy roots", "Burying the crown"],
   },
   {
+    eyebrow: "New Growth",
     title: "Propagation",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/8/87/Phalaenopsis_keiki.jpg",
     imageAlt: "Young Phalaenopsis keiki growing from an orchid stem.",
@@ -120,29 +128,36 @@ export function CareGuidePage() {
         <ul className="flex flex-col gap-5">
           {careTopics.map((topic, index) => (
             <li key={topic.title} className="overflow-hidden rounded-lg bg-mist shadow-sm">
-              <div className="grid min-h-[24rem] gap-0 lg:grid-cols-2">
+              <div className="grid min-h-[26rem] gap-0 lg:grid-cols-2">
                 <div
-                  className={`min-h-72 overflow-hidden bg-peony/40 lg:min-h-full ${
+                  className={`min-h-80 overflow-hidden bg-peony/40 lg:min-h-full ${
                     index % 2 === 0 ? "order-1" : "order-2"
                   }`}
                 >
                   <img
                     src={topic.imageUrl}
                     alt={topic.imageAlt}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover transition duration-300 hover:scale-105"
                   />
                 </div>
 
                 <div
-                  className={`flex flex-col justify-center gap-5 p-5 sm:p-7 lg:p-8 ${
+                  className={`flex flex-col justify-center gap-6 p-5 sm:p-7 lg:p-9 ${
                     index % 2 === 0 ? "order-2" : "order-1"
                   }`}
                 >
                   <div>
-                    <h2 className="text-3xl font-bold text-ink">{topic.title}</h2>
-                    <p className="mt-3 text-base leading-7 text-ink/80">{topic.summary}</p>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-bark">
+                      {topic.eyebrow}
+                    </p>
+                    <h2 className="mt-2 text-3xl font-bold leading-tight text-ink">
+                      {topic.title}
+                    </h2>
+                    <p className="mt-4 text-lg font-semibold leading-7 text-ink/85">
+                      {topic.summary}
+                    </p>
                     <p className="mt-3 text-base leading-7 text-ink/80">{topic.detail}</p>
-                    <p className="mt-4 rounded-md bg-white/65 px-4 py-3 text-sm font-semibold leading-6 text-bark">
+                    <p className="mt-5 rounded-md bg-white/70 px-4 py-3 text-sm font-semibold leading-6 text-bark shadow-sm">
                       {topic.cue}
                     </p>
                   </div>
@@ -168,7 +183,7 @@ type CareListProps = {
 
 function CareList({ title, items }: CareListProps) {
   return (
-    <div>
+    <div className="rounded-md bg-white/55 p-4">
       <h3 className="text-sm font-bold uppercase tracking-wide text-bark">{title}</h3>
       <ul className="mt-2 space-y-2 text-sm leading-6 text-ink/80">
         {items.map((item) => (

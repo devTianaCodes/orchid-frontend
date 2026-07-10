@@ -1,5 +1,6 @@
 import orchidFertiliserCareImage from "../assets/orchid-fertiliser-care.png";
 import orchidPropagationCareImage from "../assets/orchid-propagation-care.png";
+import orchidRepottingCareImage from "../assets/orchid-repotting-care.png";
 
 type CareTopic = {
   eyebrow: string;
@@ -85,9 +86,8 @@ const careTopics: CareTopic[] = [
   {
     eyebrow: "Maintenance",
     title: "Repotting",
-    imageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/f/fd/Orchid_-_Phalaenopsis_%2849542028821%29.jpg",
-    imageAlt: "Phalaenopsis orchid roots and pot structure for repotting.",
+    imageUrl: orchidRepottingCareImage,
+    imageAlt: "Blooming orchid being repotted with fresh bark mix and visible roots.",
     summary:
       "Repot when the bark breaks down, the pot no longer drains well, or healthy roots have clearly outgrown the container.",
     detail:

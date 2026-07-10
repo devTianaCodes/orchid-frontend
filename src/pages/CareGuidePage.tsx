@@ -1,4 +1,5 @@
 import orchidFertiliserCareImage from "../assets/orchid-fertiliser-care.png";
+import orchidPropagationCareImage from "../assets/orchid-propagation-care.png";
 
 type CareTopic = {
   eyebrow: string;
@@ -98,8 +99,8 @@ const careTopics: CareTopic[] = [
   {
     eyebrow: "New Growth",
     title: "Propagation",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/8/87/Phalaenopsis_keiki.jpg",
-    imageAlt: "Young Phalaenopsis keiki growing from an orchid stem.",
+    imageUrl: orchidPropagationCareImage,
+    imageAlt: "Parent orchid plant connected to a young propagated orchid plant.",
     summary:
       "Beginner-friendly propagation usually means waiting for a natural keiki or dividing mature orchids that are large enough.",
     detail:
@@ -113,6 +114,9 @@ const careTopics: CareTopic[] = [
     ],
   },
 ];
+
+const defaultCareImageClassName =
+  "h-full w-full object-cover transition duration-300 hover:scale-105";
 
 export function CareGuidePage() {
   return (
@@ -138,7 +142,7 @@ export function CareGuidePage() {
                   <img
                     src={topic.imageUrl}
                     alt={topic.imageAlt}
-                    className="h-full w-full object-cover transition duration-300 hover:scale-105"
+                    className={defaultCareImageClassName}
                   />
                 </div>
 

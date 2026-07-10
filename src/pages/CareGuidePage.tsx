@@ -1,3 +1,5 @@
+import orchidFertiliserCareImage from "../assets/orchid-fertiliser-care.png";
+
 type CareTopic = {
   eyebrow: string;
   title: string;
@@ -69,9 +71,8 @@ const careTopics: CareTopic[] = [
   {
     eyebrow: "Nutrition",
     title: "Feeding",
-    imageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/e/e4/Fertilizers_for_Orchids_NPK_4-6-7.png",
-    imageAlt: "Orchid fertilizer packaging showing NPK feeding information.",
+    imageUrl: orchidFertiliserCareImage,
+    imageAlt: "Orchid fertiliser bottles beside blooming orchids.",
     summary:
       "Feed lightly during active growth, especially when new leaves and roots are forming, and reduce feeding during rest periods.",
     detail:

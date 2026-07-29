@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   getOrchidFilters,
@@ -20,6 +21,7 @@ import { LoadingState } from "../components/LoadingState";
 import { OrchidCard } from "../components/OrchidCard";
 import { PaginationControls } from "../components/PaginationControls";
 import { useFavoriteOrchids } from "../hooks/useFavoriteOrchids";
+import { toOrchidDetailPath } from "../utils/orchidRoutes";
 
 type BrowseFilters = {
   q: string;
@@ -42,6 +44,7 @@ const defaultBrowseFilters: BrowseFilters = {
 const orchidPageSize = 12;
 
 export function OrchidBrowsePage() {
+  const navigate = useNavigate();
   const [orchids, setOrchids] = useState<OrchidListItem[]>([]);
   const [pagination, setPagination] = useState<OrchidListPagination | null>(null);
   const [filterMetadata, setFilterMetadata] = useState<
@@ -151,13 +154,33 @@ export function OrchidBrowsePage() {
     resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  function openRandomOrchid() {
+    const randomOrchid = orchids[Math.floor(Math.random() * orchids.length)];
+
+    if (randomOrchid) {
+      navigate(toOrchidDetailPath(randomOrchid.slug));
+    }
+  }
+
   return (
     <>
-      <section className="rounded-lg bg-mist p-5 shadow-sm">
-        <p className="text-sm font-medium uppercase tracking-wide text-bark">Orchid Encyclopedia</p>
-        <p className="mt-3 text-base leading-7 text-ink/80">
-          Browse orchid varieties and learn their care needs.
-        </p>
+      <section className="flex flex-col gap-4 rounded-lg bg-mist p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="text-sm font-medium uppercase tracking-wide text-bark">
+            Orchid Encyclopedia
+          </p>
+          <p className="mt-3 text-base leading-7 text-ink/80">
+            Browse orchid varieties and learn their care needs.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={openRandomOrchid}
+          disabled={isLoading || Boolean(errorMessage) || orchids.length === 0}
+          className="inline-flex h-11 shrink-0 items-center justify-center rounded-md bg-rosy px-5 text-sm font-bold text-white transition hover:bg-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-45"
+        >
+          Surprise me
+        </button>
       </section>
 
       {filterMetadata ? (

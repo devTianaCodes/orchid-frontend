@@ -14,6 +14,7 @@ export function OrchidDetailPage() {
   const { closeFavoriteModal, favoriteModal, favoriteSlugs, toggleFavorite } = useFavoriteOrchids();
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [temperatureUnit, setTemperatureUnit] = useState<"celsius" | "fahrenheit">("celsius");
   const slugError = slug ? null : "Missing orchid slug.";
 
   useEffect(() => {
@@ -113,6 +114,25 @@ export function OrchidDetailPage() {
           <p className="max-w-2xl text-base leading-7 text-ink/80">{orchid.shortDescription}</p>
 
           <section className="grid grid-cols-2 gap-3 text-sm">
+            <div className="col-span-2 flex items-center justify-between gap-3">
+              <h3 className="font-medium text-bark">Growing conditions</h3>
+              <div
+                role="group"
+                aria-label="Temperature unit"
+                className="inline-flex rounded-md bg-white/70 p-1 shadow-sm"
+              >
+                <TemperatureUnitButton
+                  label="°C"
+                  isActive={temperatureUnit === "celsius"}
+                  onClick={() => setTemperatureUnit("celsius")}
+                />
+                <TemperatureUnitButton
+                  label="°F"
+                  isActive={temperatureUnit === "fahrenheit"}
+                  onClick={() => setTemperatureUnit("fahrenheit")}
+                />
+              </div>
+            </div>
             <DetailMetric label="Difficulty" value={formatLabel(orchid.difficulty)} />
             <DetailMetric label="Light" value={formatLabel(orchid.lightNeeds)} />
             <DetailMetric label="Watering" value={formatLabel(orchid.wateringNeeds)} />
@@ -123,7 +143,11 @@ export function OrchidDetailPage() {
             />
             <DetailMetric
               label="Temperature"
-              value={`${orchid.temperatureMinCelsius}°C - ${orchid.temperatureMaxCelsius}°C`}
+              value={formatTemperatureRange(
+                orchid.temperatureMinCelsius,
+                orchid.temperatureMaxCelsius,
+                temperatureUnit,
+              )}
             />
           </section>
         </div>
@@ -149,6 +173,27 @@ export function OrchidDetailPage() {
         </div>
       </div>
     </article>
+  );
+}
+
+type TemperatureUnitButtonProps = {
+  label: string;
+  isActive: boolean;
+  onClick: () => void;
+};
+
+function TemperatureUnitButton({ label, isActive, onClick }: TemperatureUnitButtonProps) {
+  return (
+    <button
+      type="button"
+      aria-pressed={isActive}
+      onClick={onClick}
+      className={`rounded px-3 py-1.5 text-xs font-bold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy ${
+        isActive ? "bg-rosy text-white" : "text-bark hover:bg-peony/55"
+      }`}
+    >
+      {label}
+    </button>
   );
 }
 
@@ -185,4 +230,19 @@ function formatLabel(value: string) {
     .split("-")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatTemperatureRange(
+  minimumCelsius: number,
+  maximumCelsius: number,
+  unit: "celsius" | "fahrenheit",
+) {
+  if (unit === "fahrenheit") {
+    const minimumFahrenheit = Math.round((minimumCelsius * 9) / 5 + 32);
+    const maximumFahrenheit = Math.round((maximumCelsius * 9) / 5 + 32);
+
+    return `${minimumFahrenheit}°F - ${maximumFahrenheit}°F`;
+  }
+
+  return `${minimumCelsius}°C - ${maximumCelsius}°C`;
 }

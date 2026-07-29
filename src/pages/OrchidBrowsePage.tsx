@@ -31,6 +31,8 @@ type BrowseFilters = {
   water: "" | OrchidWateringNeeds;
   growthType: "" | OrchidGrowthType;
   bloomSeason: "" | OrchidBloomSeason;
+  humidity: string;
+  temperature: string;
 };
 
 const defaultBrowseFilters: BrowseFilters = {
@@ -40,6 +42,8 @@ const defaultBrowseFilters: BrowseFilters = {
   water: "",
   growthType: "",
   bloomSeason: "",
+  humidity: "",
+  temperature: "",
 };
 
 const orchidPageSize = 12;
@@ -271,6 +275,23 @@ export function OrchidBrowsePage() {
               />
             </div>
 
+            <div className="grid gap-4 sm:grid-cols-2">
+              <NumberFilter
+                label="Humidity at home (%)"
+                value={filters.humidity}
+                minimum={filterMetadata.humidityPercentRange.min}
+                maximum={filterMetadata.humidityPercentRange.max}
+                onChange={(value) => updateFilter("humidity", value)}
+              />
+              <NumberFilter
+                label="Room temperature (°C)"
+                value={filters.temperature}
+                minimum={filterMetadata.temperatureCelsiusRange.min}
+                maximum={filterMetadata.temperatureCelsiusRange.max}
+                onChange={(value) => updateFilter("temperature", value)}
+              />
+            </div>
+
             <div className="flex justify-end">
               <button
                 type="button"
@@ -354,6 +375,32 @@ function SelectFilter({ label, value, options, onChange }: SelectFilterProps) {
   );
 }
 
+type NumberFilterProps = {
+  label: string;
+  value: string;
+  minimum: number;
+  maximum: number;
+  onChange: (value: string) => void;
+};
+
+function NumberFilter({ label, value, minimum, maximum, onChange }: NumberFilterProps) {
+  return (
+    <label className="flex flex-col gap-2 text-sm font-medium text-bark">
+      {label}
+      <input
+        type="number"
+        inputMode="decimal"
+        value={value}
+        min={minimum}
+        max={maximum}
+        placeholder={`Any (${minimum}–${maximum})`}
+        onChange={(event) => onChange(event.target.value)}
+        className="h-11 rounded-md bg-white px-3 text-base font-normal text-ink shadow-sm outline-none transition focus:ring-2 focus:ring-rosy"
+      />
+    </label>
+  );
+}
+
 function toOrchidListFilters(filters: BrowseFilters): OrchidListFilters {
   return {
     q: filters.q.trim() || undefined,
@@ -362,5 +409,7 @@ function toOrchidListFilters(filters: BrowseFilters): OrchidListFilters {
     water: filters.water || undefined,
     growthType: filters.growthType || undefined,
     bloomSeason: filters.bloomSeason || undefined,
+    humidity: filters.humidity === "" ? undefined : Number(filters.humidity),
+    temperature: filters.temperature === "" ? undefined : Number(filters.temperature),
   };
 }

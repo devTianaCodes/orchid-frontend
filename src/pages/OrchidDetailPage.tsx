@@ -137,6 +137,17 @@ export function OrchidDetailPage() {
 
           <p className="max-w-2xl text-base leading-7 text-ink/80">{orchid.shortDescription}</p>
 
+          <aside
+            aria-label="Quick care summary"
+            className="rounded-md border border-moss/25 bg-peony/45 px-4 py-3"
+          >
+            <p className="text-xs font-semibold uppercase tracking-wide text-bark">At a glance</p>
+            <p className="mt-2 text-sm font-semibold leading-6 text-ink">
+              {formatDifficultySummary(orchid.difficulty)} · {formatLabel(orchid.wateringNeeds)}{" "}
+              water · {formatLabel(orchid.lightNeeds)} light
+            </p>
+          </aside>
+
           <section className="grid grid-cols-2 gap-3 text-sm">
             <div className="col-span-2 flex items-center justify-between gap-3">
               <h3 className="font-medium text-bark">Growing conditions</h3>
@@ -254,6 +265,18 @@ function formatLabel(value: string) {
     .split("-")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatDifficultySummary(difficulty: OrchidDetail["difficulty"]) {
+  if (difficulty === "beginner") {
+    return "Beginner friendly";
+  }
+
+  if (difficulty === "intermediate") {
+    return "Intermediate care";
+  }
+
+  return "Advanced care";
 }
 
 function formatTemperatureRange(

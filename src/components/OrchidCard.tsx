@@ -50,6 +50,11 @@ export function OrchidCard({ orchid, isFavorite, onToggleFavorite }: OrchidCardP
             <p className="mt-1 text-sm italic leading-5 text-bark">{orchid.scientificName}</p>
           </div>
           <p className="line-clamp-3 text-sm leading-6 text-ink/75">{orchid.shortDescription}</p>
+          <ul aria-label="Quick care needs" className="flex flex-wrap gap-2">
+            <CareBadge label={formatCareLabel(orchid.difficulty)} />
+            <CareBadge label={`${formatCareLabel(orchid.lightNeeds)} light`} />
+            <CareBadge label={`${formatCareLabel(orchid.wateringNeeds)} water`} />
+          </ul>
           <div className="mt-auto flex justify-center pt-1">
             <span className="inline-flex h-10 items-center justify-center rounded-md border border-moss/45 px-5 text-sm font-semibold text-rosy transition group-hover:border-rosy">
               Explore
@@ -59,4 +64,19 @@ export function OrchidCard({ orchid, isFavorite, onToggleFavorite }: OrchidCardP
       </Link>
     </li>
   );
+}
+
+function CareBadge({ label }: { label: string }) {
+  return (
+    <li className="rounded-full bg-peony/55 px-2.5 py-1 text-xs font-semibold text-bark">
+      {label}
+    </li>
+  );
+}
+
+function formatCareLabel(value: string) {
+  return value
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }

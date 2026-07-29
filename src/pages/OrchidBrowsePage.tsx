@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   getOrchidFilters,
@@ -21,6 +21,7 @@ import { LoadingState } from "../components/LoadingState";
 import { OrchidCard } from "../components/OrchidCard";
 import { PaginationControls } from "../components/PaginationControls";
 import { useFavoriteOrchids } from "../hooks/useFavoriteOrchids";
+import { readRecentlyViewedOrchids } from "../utils/recentlyViewedOrchids";
 import { toOrchidDetailPath } from "../utils/orchidRoutes";
 
 type BrowseFilters = {
@@ -45,6 +46,7 @@ const orchidPageSize = 12;
 
 export function OrchidBrowsePage() {
   const navigate = useNavigate();
+  const [recentlyViewedOrchids] = useState(readRecentlyViewedOrchids);
   const [orchids, setOrchids] = useState<OrchidListItem[]>([]);
   const [pagination, setPagination] = useState<OrchidListPagination | null>(null);
   const [filterMetadata, setFilterMetadata] = useState<
@@ -182,6 +184,35 @@ export function OrchidBrowsePage() {
           Surprise me
         </button>
       </section>
+
+      {recentlyViewedOrchids.length > 0 ? (
+        <section
+          aria-labelledby="recently-viewed-heading"
+          className="rounded-lg bg-mist p-5 shadow-sm"
+        >
+          <h2
+            id="recently-viewed-heading"
+            className="text-sm font-medium uppercase tracking-wide text-bark"
+          >
+            Recently viewed
+          </h2>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {recentlyViewedOrchids.map((recentOrchid) => (
+              <li key={recentOrchid.slug}>
+                <Link
+                  to={toOrchidDetailPath(recentOrchid.slug)}
+                  className="block rounded-md bg-white/70 px-4 py-3 transition hover:bg-peony/45 focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy"
+                >
+                  <span className="block font-semibold text-ink">{recentOrchid.commonName}</span>
+                  <span className="mt-1 block text-sm italic text-bark">
+                    {recentOrchid.scientificName}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {filterMetadata ? (
         <section className="rounded-lg bg-mist p-5 shadow-sm">

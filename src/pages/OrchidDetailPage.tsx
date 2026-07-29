@@ -6,6 +6,7 @@ import { ErrorState } from "../components/ErrorState";
 import { FavoriteFeedback } from "../components/FavoriteFeedback";
 import { LoadingState } from "../components/LoadingState";
 import { useFavoriteOrchids } from "../hooks/useFavoriteOrchids";
+import { recordRecentlyViewedOrchid } from "../utils/recentlyViewedOrchids";
 import { toApiOrchidSlug } from "../utils/orchidRoutes";
 
 export function OrchidDetailPage() {
@@ -32,6 +33,7 @@ export function OrchidDetailPage() {
 
         if (isMounted) {
           setOrchid(response.orchid);
+          recordRecentlyViewedOrchid(response.orchid);
           setErrorMessage(null);
         }
       } catch (error) {

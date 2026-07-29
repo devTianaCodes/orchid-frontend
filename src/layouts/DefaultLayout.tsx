@@ -2,12 +2,14 @@ import { useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 
 import orchidCareLogo from "../assets/orchidcare-logo.png";
+import { useFavoriteCount } from "../hooks/useFavoriteCount";
 
 const homeHeroImageUrl =
   "https://images.unsplash.com/photo-1571677179476-ab32559a6c7c?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=80&w=3000";
 
 export function DefaultLayout() {
   const location = useLocation();
+  const favoriteCount = useFavoriteCount();
   const isHomePage = location.pathname === "/";
   const isOrchidsPage = location.pathname === "/orchids";
   const isCareGuidePage = location.pathname === "/care-guide";
@@ -91,7 +93,7 @@ export function DefaultLayout() {
               Orchids
             </NavLink>
             <NavLink to="/favorites" className={navLinkClass}>
-              Favorites
+              Favorites ({favoriteCount})
             </NavLink>
             <NavLink to="/rare-orchids" className={navLinkClass}>
               Rare Collection
@@ -111,7 +113,7 @@ export function DefaultLayout() {
                 className={navLinkClass}
                 onClick={() => setIsMenuOpen(false)}
               >
-                Favorites
+                Favorites ({favoriteCount})
               </NavLink>
               <NavLink
                 to="/rare-orchids"

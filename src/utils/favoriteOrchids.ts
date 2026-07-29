@@ -1,6 +1,7 @@
 import type { OrchidListItem } from "../api/orchidApi";
 
 const favoriteOrchidsStorageKey = "orchidcare.favoriteOrchids";
+export const favoriteOrchidsChangedEventName = "orchidcare:favorites-changed";
 
 type StoredOrchidListItem = Omit<OrchidListItem, "isRare"> & {
   isRare?: boolean;
@@ -36,6 +37,7 @@ export function saveFavoriteOrchids(favorites: OrchidListItem[]) {
   }
 
   window.localStorage.setItem(favoriteOrchidsStorageKey, JSON.stringify(favorites));
+  window.dispatchEvent(new Event(favoriteOrchidsChangedEventName));
 }
 
 export function toggleFavoriteOrchid(orchid: OrchidListItem, favorites: OrchidListItem[]) {

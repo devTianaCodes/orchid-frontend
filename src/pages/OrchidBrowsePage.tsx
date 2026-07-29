@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import {
   getOrchidFilters,
@@ -47,22 +47,39 @@ const defaultBrowseFilters: BrowseFilters = {
 };
 
 const orchidPageSize = 12;
+const difficultyValues: OrchidDifficulty[] = ["beginner", "intermediate", "advanced"];
+const lightValues: OrchidLightNeeds[] = ["low", "medium", "bright-indirect", "high"];
+const wateringValues: OrchidWateringNeeds[] = ["low", "moderate", "frequent"];
+const growthTypeValues: OrchidGrowthType[] = [
+  "epiphyte",
+  "terrestrial",
+  "lithophyte",
+  "semi-terrestrial",
+];
+const bloomSeasonValues: OrchidBloomSeason[] = ["winter", "spring", "summer", "autumn", "varies"];
 
 export function OrchidBrowsePage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [recentlyViewedOrchids] = useState(readRecentlyViewedOrchids);
   const [orchids, setOrchids] = useState<OrchidListItem[]>([]);
   const [pagination, setPagination] = useState<OrchidListPagination | null>(null);
   const [filterMetadata, setFilterMetadata] = useState<
     OrchidFilterMetadataResponse["filters"] | null
   >(null);
-  const [filters, setFilters] = useState<BrowseFilters>(defaultBrowseFilters);
+  const [filters, setFilters] = useState<BrowseFilters>(() =>
+    readBrowseFiltersFromSearchParams(searchParams),
+  );
   const { closeFavoriteModal, favoriteModal, favoriteSlugs, toggleFavorite } = useFavoriteOrchids();
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(() => readPageFromSearchParams(searchParams));
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const filterRequestIdRef = useRef(0);
   const resultsRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setSearchParams(createBrowseSearchParams(filters, page), { replace: true });
+  }, [filters, page, setSearchParams]);
 
   useEffect(() => {
     let isMounted = true;
@@ -412,4 +429,57 @@ function toOrchidListFilters(filters: BrowseFilters): OrchidListFilters {
     humidity: filters.humidity === "" ? undefined : Number(filters.humidity),
     temperature: filters.temperature === "" ? undefined : Number(filters.temperature),
   };
+}
+
+function readBrowseFiltersFromSearchParams(searchParams: URLSearchParams): BrowseFilters {
+  return {
+    q: searchParams.get("q") ?? defaultBrowseFilters.q,
+    difficulty: readEnumSearchParam(searchParams, "difficulty", difficultyValues),
+    light: readEnumSearchParam(searchParams, "light", lightValues),
+    water: readEnumSearchParam(searchParams, "water", wateringValues),
+    growthType: readEnumSearchParam(searchParams, "growthType", growthTypeValues),
+    bloomSeason: readEnumSearchParam(searchParams, "bloomSeason", bloomSeasonValues),
+    humidity: readNumberSearchParam(searchParams, "humidity"),
+    temperature: readNumberSearchParam(searchParams, "temperature"),
+  };
+}
+
+function readEnumSearchParam<TValue extends string>(
+  searchParams: URLSearchParams,
+  name: string,
+  allowedValues: TValue[],
+): "" | TValue {
+  const value = searchParams.get(name);
+
+  return value && allowedValues.includes(value as TValue) ? (value as TValue) : "";
+}
+
+function readNumberSearchParam(searchParams: URLSearchParams, name: string) {
+  const value = searchParams.get(name);
+
+  return value !== null && value.trim() !== "" && Number.isFinite(Number(value)) ? value : "";
+}
+
+function readPageFromSearchParams(searchParams: URLSearchParams) {
+  const page = Number(searchParams.get("page"));
+
+  return Number.isInteger(page) && page > 0 ? page : 1;
+}
+
+function createBrowseSearchParams(filters: BrowseFilters, page: number) {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(filters).forEach(([name, value]) => {
+    const normalizedValue = value.trim();
+
+    if (normalizedValue) {
+      searchParams.set(name, normalizedValue);
+    }
+  });
+
+  if (page > 1) {
+    searchParams.set("page", String(page));
+  }
+
+  return searchParams;
 }

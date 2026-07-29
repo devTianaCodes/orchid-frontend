@@ -15,6 +15,7 @@ export function OrchidDetailPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [temperatureUnit, setTemperatureUnit] = useState<"celsius" | "fahrenheit">("celsius");
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">("idle");
   const slugError = slug ? null : "Missing orchid slug.";
 
   useEffect(() => {
@@ -70,6 +71,15 @@ export function OrchidDetailPage() {
 
   const isFavorite = favoriteSlugs.has(orchid.slug);
 
+  async function copyOrchidLink() {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopyStatus("copied");
+    } catch {
+      setCopyStatus("error");
+    }
+  }
+
   return (
     <article className="relative overflow-hidden rounded-lg bg-mist shadow-sm">
       <FavoriteFeedback feedback={favoriteModal} onClose={closeFavoriteModal} />
@@ -97,6 +107,18 @@ export function OrchidDetailPage() {
               {orchid.commonName}
             </h2>
             <p className="mt-2 text-lg italic text-bark">{orchid.scientificName}</p>
+            <div className="mt-4 flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => void copyOrchidLink()}
+                className="inline-flex h-10 items-center justify-center rounded-md border border-moss/45 bg-white/70 px-4 text-sm font-semibold text-rosy transition hover:border-rosy focus:outline-none focus-visible:ring-2 focus-visible:ring-rosy"
+              >
+                {copyStatus === "copied" ? "Link copied" : "Copy link"}
+              </button>
+              <p aria-live="polite" className="text-sm text-bark">
+                {copyStatus === "error" ? "Could not copy the link." : ""}
+              </p>
+            </div>
           </header>
 
           <div className="aspect-[4/3] overflow-hidden rounded-md bg-peony/40 lg:max-h-[28rem]">
